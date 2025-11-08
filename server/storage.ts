@@ -1,39 +1,154 @@
-import { users, type User, type InsertUser } from "@shared/schema";
-
-// modify the interface with any CRUD methods
-// you might need
+import { eq } from "drizzle-orm";
+import { db } from "./db";
+import { 
+  users, 
+  userProgress, 
+  completedLevels, 
+  badges, 
+  certificates,
+  type User, 
+  type InsertUser,
+  type UserProgress,
+  type CompletedLevel,
+  type Badge,
+  type Certificate
+} from "@shared/schema";
 
 export interface IStorage {
+  // User management
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  
+  // Progress management
+  getUserProgress(userId: number): Promise<UserProgress | undefined>;
+  updateUserProgress(userId: number, data: Partial<UserProgress>): Promise<UserProgress>;
+  createUserProgress(userId: number): Promise<UserProgress>;
+  
+  // Completed levels
+  addCompletedLevel(userId: number, levelId: string, courseId: string, xpEarned: number): Promise<CompletedLevel>;
+  getCompletedLevels(userId: number): Promise<CompletedLevel[]>;
+  
+  // Badges
+  addBadge(userId: number, badgeData: Omit<Badge, 'id' | 'userId' | 'earnedAt'>): Promise<Badge>;
+  getUserBadges(userId: number): Promise<Badge[]>;
+  
+  // Certificates
+  createCertificate(userId: number, courseId: string, courseName: string, shareableId: string): Promise<Certificate>;
+  getCertificate(shareableId: string): Promise<Certificate | undefined>;
+  getUserCertificates(userId: number): Promise<Certificate[]>;
+  
+  // Leaderboard
+  getTopUsers(limit: number): Promise<Array<User & { totalXP: number; level: number }>>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  currentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.currentId = 1;
-  }
-
+export class DBStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return result[0];
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return result[0];
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createUser(user: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(user).returning();
+    const newUser = result[0];
+    
+    await this.createUserProgress(newUser.id);
+    
+    return newUser;
+  }
+
+  async getUserProgress(userId: number): Promise<UserProgress | undefined> {
+    const result = await db.select().from(userProgress).where(eq(userProgress.userId, userId)).limit(1);
+    return result[0];
+  }
+
+  async createUserProgress(userId: number): Promise<UserProgress> {
+    const result = await db.insert(userProgress).values({
+      userId,
+      totalXP: 0,
+      level: 1,
+      currentCourse: null,
+      currentLevel: null,
+    }).returning();
+    return result[0];
+  }
+
+  async updateUserProgress(userId: number, data: Partial<UserProgress>): Promise<UserProgress> {
+    const result = await db.update(userProgress)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(userProgress.userId, userId))
+      .returning();
+    return result[0];
+  }
+
+  async addCompletedLevel(userId: number, levelId: string, courseId: string, xpEarned: number): Promise<CompletedLevel> {
+    const result = await db.insert(completedLevels).values({
+      userId,
+      levelId,
+      courseId,
+      xpEarned,
+    }).returning();
+    return result[0];
+  }
+
+  async getCompletedLevels(userId: number): Promise<CompletedLevel[]> {
+    return await db.select().from(completedLevels).where(eq(completedLevels.userId, userId));
+  }
+
+  async addBadge(userId: number, badgeData: Omit<Badge, 'id' | 'userId' | 'earnedAt'>): Promise<Badge> {
+    const result = await db.insert(badges).values({
+      userId,
+      ...badgeData,
+    }).returning();
+    return result[0];
+  }
+
+  async getUserBadges(userId: number): Promise<Badge[]> {
+    return await db.select().from(badges).where(eq(badges.userId, userId));
+  }
+
+  async createCertificate(userId: number, courseId: string, courseName: string, shareableId: string): Promise<Certificate> {
+    const result = await db.insert(certificates).values({
+      userId,
+      courseId,
+      courseName,
+      shareableId,
+    }).returning();
+    return result[0];
+  }
+
+  async getCertificate(shareableId: string): Promise<Certificate | undefined> {
+    const result = await db.select().from(certificates).where(eq(certificates.shareableId, shareableId)).limit(1);
+    return result[0];
+  }
+
+  async getUserCertificates(userId: number): Promise<Certificate[]> {
+    return await db.select().from(certificates).where(eq(certificates.userId, userId));
+  }
+
+  async getTopUsers(limit: number = 10): Promise<Array<User & { totalXP: number; level: number }>> {
+    const result = await db
+      .select({
+        id: users.id,
+        username: users.username,
+        password: users.password,
+        email: users.email,
+        createdAt: users.createdAt,
+        totalXP: userProgress.totalXP,
+        level: userProgress.level,
+      })
+      .from(users)
+      .leftJoin(userProgress, eq(users.id, userProgress.userId))
+      .orderBy(userProgress.totalXP)
+      .limit(limit);
+    
+    return result as Array<User & { totalXP: number; level: number }>;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DBStorage();
