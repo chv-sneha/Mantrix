@@ -46,7 +46,7 @@ export default function Intro({ onNavigate }: IntroProps) {
       {/* Content */}
       <div className={`relative z-10 text-center text-white transition-all duration-1000 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent animate-glow">
-          SkillQuest
+          Mantrix
         </h1>
         <p className="text-xl mb-8 max-w-2xl mx-auto px-4 text-gray-200">
           Embark on an epic learning journey through interactive worlds of knowledge

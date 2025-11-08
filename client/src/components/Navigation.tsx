@@ -26,7 +26,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
               <span className="text-2xl">🎮</span>
             </div>
             <h1 className="font-game text-lg sm:text-xl text-indigo-400 glow-text">
-              SkillQuest
+              Mantrix
             </h1>
           </div>
 

@@ -24,7 +24,7 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
           
           <h1 className="font-game text-3xl sm:text-4xl md:text-5xl mb-6 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 glow-text">
-            Welcome to SkillQuest
+            Welcome to Mantrix
           </h1>
           
           <p className="font-orbitron text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto mb-8">

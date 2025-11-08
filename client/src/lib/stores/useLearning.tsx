@@ -2602,7 +2602,7 @@ export const useLearning = create<LearningState>()(
       })),
     }),
     {
-      name: 'skillquest-learning',
+      name: 'mantrix-learning',
       version: 3,
       migrate: (persistedState: any, version: number) => {
         if (version < 2) {

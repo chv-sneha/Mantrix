@@ -25,7 +25,7 @@ export default function Profile() {
                 {user?.username || 'Guest Player'}
               </h2>
               <p className="font-orbitron text-sm text-gray-400 mb-4">
-                {user?.email || 'SkillQuest Adventurer'}
+                {user?.email || 'Mantrix Explorer'}
               </p>
               
               <div className="flex flex-wrap justify-center md:justify-start gap-3">

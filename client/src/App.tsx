@@ -11,6 +11,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Auth from "./pages/Auth";
 import Intro from "./pages/intro";
 import { GameArena } from "./pages/GameArena";
+import CursorTrail from "./components/CursorTrail";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('intro');
@@ -73,6 +74,7 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <CursorTrail />
       <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
       {renderPage()}
     </div>
