@@ -1404,7 +1404,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-data-smith-2',
-          type: 'sorting-conveyor',
+          type: 'data-cleaning',
           title: 'Data Smith',
           description: 'Collect and clean corrupted data shards',
           objective: 'Transform messy data into clean datasets',
@@ -1492,7 +1492,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-algorithm-battles-3',
-          type: 'search-challenge',
+          type: 'algorithm-selection',
           title: 'Algorithm Battles',
           description: 'Choose the right ML algorithm for each problem',
           objective: 'Match algorithms to problems and understand their properties',
@@ -1580,7 +1580,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-train-titans-4',
-          type: 'pattern-builder',
+          type: 'hyperparameter-tuning',
           title: 'Train the Titans',
           description: 'Tune hyperparameters to optimize model performance',
           objective: 'Adjust learning rate, depth, and other parameters to improve accuracy',
@@ -1674,7 +1674,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-neural-core-5',
-          type: 'pattern-builder',
+          type: 'neural-network-builder',
           title: 'Build the Neural Core',
           description: 'Connect neurons to form working neural networks',
           objective: 'Complete circuits by connecting activation → hidden → output correctly',
@@ -1762,7 +1762,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-vision-tower-6',
-          type: 'pattern-builder',
+          type: 'cnn-filter',
           title: 'Rebuild the Vision',
           description: 'Use convolution filters to process and reconstruct images',
           objective: 'Apply correct filters to restore corrupted image statues',
@@ -1850,7 +1850,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-echo-words-7',
-          type: 'pattern-builder',
+          type: 'nlp-processing',
           title: 'Echo of Words',
           description: 'Decode and clean corrupted text messages',
           objective: 'Process text data and train a mini chatbot',
@@ -1944,7 +1944,7 @@ const initialCourses: Course[] = [
         ],
         gameConfig: {
           id: 'aiml-balance-matrix-8',
-          type: 'backtracking-puzzle',
+          type: 'ethics-decision',
           title: 'Balance of the Matrix',
           description: 'Make ethical AI decisions in branching scenarios',
           objective: 'Balance fairness, accuracy, and transparency in real-world situations',
