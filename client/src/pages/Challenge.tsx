@@ -8,7 +8,7 @@ interface ChallengeProps {
 }
 
 export default function Challenge({ onNavigate }: ChallengeProps) {
-  const { courses, userProgress, completeLevel, updateAIMessages, aiCompanion, toggleAICompanion } = useLearning();
+  const { courses, userProgress, advanceStage, startGame, updateAIMessages, aiCompanion, toggleAICompanion } = useLearning();
   const { playSuccess } = useAudio();
   const [userAnswer, setUserAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
@@ -31,6 +31,9 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     return null;
   }
 
+  const currentStage = currentLevel.currentStage || 'learn';
+  const hasGame = !!currentLevel.gameConfig;
+
   const handleSubmit = () => {
     const correctAnswer = getCorrectAnswer(currentLevel.id);
     const correct = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
@@ -40,10 +43,25 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
 
     if (correct) {
       playSuccess();
-      setTimeout(() => {
-        completeLevel(currentLevel.id, currentLevel.xpReward);
-        onNavigate('courses');
-      }, 2000);
+      if (hasGame) {
+        setTimeout(() => {
+          advanceStage(currentLevel.id, 'quiz');
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          advanceStage(currentLevel.id, 'complete');
+          onNavigate('courses');
+        }, 2000);
+      }
+    }
+  };
+
+  const handleStartGame = () => {
+    const success = startGame(currentLevel.id);
+    if (success) {
+      onNavigate('game-arena');
+    } else {
+      console.error('Failed to start game');
     }
   };
 
@@ -231,12 +249,12 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
                     ? 'bg-green-900/50 border-green-500' 
                     : 'bg-red-900/50 border-red-500'
                 }`}>
-                  <div className="flex items-center gap-2 font-orbitron text-sm">
+                  <div className="flex items-center gap-2 font-orbitron text-sm mb-3">
                     {isCorrect ? (
                       <>
                         <CheckCircle className="w-5 h-5 text-green-400" />
                         <span className="text-green-300">
-                          Correct! You earned {currentLevel.xpReward} XP! 🎉
+                          Correct! {hasGame ? 'Now play the game to earn XP!' : `You earned ${currentLevel.xpReward} XP! 🎉`}
                         </span>
                       </>
                     ) : (
@@ -245,6 +263,15 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
                       </span>
                     )}
                   </div>
+                  
+                  {isCorrect && hasGame && currentStage === 'quiz' && (
+                    <button
+                      onClick={handleStartGame}
+                      className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 font-game text-sm text-white transition-all duration-300 glow"
+                    >
+                      🎮 Start Mini-Game
+                    </button>
+                  )}
                 </div>
               )}
 

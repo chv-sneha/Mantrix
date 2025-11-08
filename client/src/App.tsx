@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Challenge from "./pages/Challenge";
 import Leaderboard from "./pages/Leaderboard";
 import Auth from "./pages/Auth";
+import { GameArena } from "./pages/GameArena";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -52,6 +53,8 @@ function App() {
         return <Profile />;
       case 'challenge':
         return <Challenge onNavigate={setCurrentPage} />;
+      case 'game-arena':
+        return <GameArena onNavigate={setCurrentPage} />;
       case 'leaderboard':
         return <Leaderboard />;
       default:
