@@ -144,3 +144,35 @@ Preferred communication style: Simple, everyday language.
 - Audio file support (MP3, OGG, WAV)
 - Custom font loading (Google Fonts: Press Start 2P, VT323, Orbitron)
 - Font Awesome integration via Fontsource
+
+## Recent Changes
+
+### November 08, 2025 - MATRIX: The AI/ML Quest Integration
+- **Added comprehensive AI/ML course** with 9 complete levels following the MATRIX theme:
+  1. **The Awakening** - Introduction to AI & ML concepts (supervised vs unsupervised learning)
+  2. **The Data Forge** - Data preprocessing and cleaning (normalization, handling missing values)
+  3. **The Algorithm Arena** - ML algorithms (Linear Regression, Decision Trees, Random Forests, K-Means)
+  4. **The Training Grounds** - Model training, evaluation metrics, overfitting/underfitting
+  5. **The Neural Sanctum** - Introduction to Neural Networks and Deep Learning (TensorFlow/PyTorch)
+  6. **The Vision Tower** - Computer Vision and CNNs (image classification, object detection)
+  7. **The Voice Realm** - NLP and Chatbot development (tokenization, transformers, LSTMs)
+  8. **The Sage's Code** - AI Ethics, bias, fairness, and explainability (responsible AI)
+  9. **The Integration Nexus** - Real-world AI projects using APIs (OpenAI, Hugging Face, deployment)
+
+**Content Statistics:**
+- 27 quiz questions (3 per level) with detailed explanations
+- 81+ external resources (courses, tutorials, practice platforms, documentation)
+- 9 game configurations integrated into learning flow
+- Complete narrative stories and teaching content for each level
+
+**Technical Implementation:**
+- Extended `ExternalResource` type to support new resource categories: 'course', 'practice', 'tutorial', 'tool', 'platform'
+- Integrated with existing learning flow: Narrative → Videos → Game → Quiz → Resources → Complete
+- AI-suggested videos for each topic with YouTube thumbnails and links
+- Aligned with hackathon theme: "Autonomous AI Agents" - study buddy that explains, quizzes, and schedules
+
+**User Experience:**
+- Progressive difficulty scaling from beginner to advanced
+- XP rewards ranging from 150-300 per level
+- Comprehensive coverage from AI basics to production deployment
+- Real-world application focus with ethical considerations

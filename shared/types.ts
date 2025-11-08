@@ -45,7 +45,7 @@ export interface CodingTestCase {
 export interface ExternalResource {
   title: string;
   url: string;
-  type: 'leetcode' | 'neetcode' | 'hackerrank' | 'codeforces' | 'youtube' | 'article' | 'documentation';
+  type: 'leetcode' | 'neetcode' | 'hackerrank' | 'codeforces' | 'youtube' | 'article' | 'documentation' | 'course' | 'practice' | 'tutorial' | 'tool' | 'platform';
   difficulty?: 'easy' | 'medium' | 'hard';
   description?: string;
 }

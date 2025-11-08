@@ -1232,34 +1232,826 @@ const initialCourses: Course[] = [
   },
   {
     id: 'aiml',
-    name: 'AI & Machine Learning',
-    description: 'Explore artificial intelligence',
+    name: 'MATRIX: The AI/ML Quest',
+    description: 'Awaken your inner algorithm. Train your mind like you train a model.',
     icon: '🤖',
     color: '#ec4899',
     levels: [
       {
-        id: 'ai-1',
+        id: 'aiml-1',
         courseId: 'aiml',
-        title: 'Introduction to AI',
-        description: 'What is artificial intelligence?',
-        story: 'Welcome to the AI Realm, where machines learn and evolve!',
-        xpReward: 100,
-        challengeType: 'quiz',
+        title: 'The Awakening',
+        description: 'Intro to AI & ML Concepts',
+        story: 'You wake up in the "Neural Nexus" — a world powered by intelligent entities. To understand this world, you must first learn what powers it — Artificial Intelligence.',
+        narrative: 'Welcome to the Neural Nexus! This world runs on Artificial Intelligence - systems that can learn, reason, and make decisions. You\'ll discover what AI is, how machines learn from data, and see real examples of AI in action all around you.',
+        teachingContent: 'AI (Artificial Intelligence) enables machines to perform tasks that typically require human intelligence - like recognizing faces, understanding language, or playing games. Machine Learning is a subset of AI where systems learn from data without explicit programming. Deep Learning uses neural networks with many layers. Examples: Netflix recommendations (supervised learning), self-driving cars, chatbots like me!',
+        xpReward: 150,
+        challengeType: 'interactive',
         difficulty: 'beginner',
         unlocked: true,
         completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Introduction to AI and Machine Learning explained',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml1-v1',
+            title: 'AI vs Machine Learning vs Deep Learning',
+            channelTitle: 'IBM Technology',
+            thumbnailUrl: 'https://i.ytimg.com/vi/4RixMPF4xis/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=4RixMPF4xis'
+          },
+          {
+            id: 'aiml1-v2',
+            title: 'Machine Learning Explained in 5 Minutes',
+            channelTitle: 'AI Explained',
+            thumbnailUrl: 'https://i.ytimg.com/vi/ukzFI9rgwfU/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=ukzFI9rgwfU'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-1-q1',
+            question: 'What is the main difference between AI and Machine Learning?',
+            options: ['AI is older than ML', 'ML is a subset of AI focused on learning from data', 'They are exactly the same', 'ML requires more computing power'],
+            correctAnswer: 'ML is a subset of AI focused on learning from data',
+            explanation: 'Machine Learning is a specific approach within AI where systems learn patterns from data rather than being explicitly programmed with rules.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-1-q2',
+            question: 'Which of these is an example of supervised learning?',
+            options: ['Clustering customer data', 'Netflix movie recommendations', 'Exploring unknown data patterns', 'Generating random art'],
+            correctAnswer: 'Netflix movie recommendations',
+            explanation: 'Netflix uses supervised learning - it learns from labeled data (your ratings and viewing history) to predict what you\'ll enjoy watching next.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-1-q3',
+            question: 'What does "training a model" mean in machine learning?',
+            options: ['Teaching it to run faster', 'Feeding it data so it can learn patterns', 'Installing software updates', 'Making it more accurate by coding rules'],
+            correctAnswer: 'Feeding it data so it can learn patterns',
+            explanation: 'Training involves showing the model many examples so it can automatically discover patterns and relationships in the data.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Elements of AI - Free Course',
+            url: 'https://www.elementsofai.com/',
+            type: 'course',
+            description: 'Comprehensive introduction to AI concepts for everyone'
+          },
+          {
+            title: 'Andrew Ng\'s Machine Learning Course',
+            url: 'https://www.coursera.org/learn/machine-learning',
+            type: 'course',
+            description: 'The most popular ML course on the internet'
+          },
+          {
+            title: 'Google AI Crash Course',
+            url: 'https://developers.google.com/machine-learning/crash-course',
+            type: 'documentation',
+            description: 'Fast-paced practical introduction to ML'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-decode-matrix-1',
+          type: 'pattern-builder',
+          title: 'Decode the Matrix',
+          description: 'Classify real-world systems as AI-powered or rule-based',
+          objective: 'Identify whether systems use AI/ML to restore order in the Neural Nexus',
+          controls: 'Click to classify systems',
+          passingScore: 80,
+          importanceWhy: 'Understanding the difference between AI and traditional programming is fundamental. This game trains you to recognize AI in the real world - from your phone\'s face unlock to spam filters. Knowing when to use AI versus rules-based systems is a critical skill for any developer.'
+        }
       },
       {
-        id: 'ai-2',
+        id: 'aiml-2',
         courseId: 'aiml',
-        title: 'Neural Networks',
-        description: 'Understanding brain-inspired computing',
-        story: 'Dive into the Neural Network Nexus and unlock the secrets of machine cognition.',
-        xpReward: 150,
+        title: 'The Data Forge',
+        description: 'Data & Preprocessing',
+        story: 'The AI Nexus runs on Data Crystals — they\'re corrupted. You must clean, shape, and prepare them for training models.',
+        narrative: 'In the machine learning realm, data is everything. But raw data is messy - missing values, inconsistencies, noise. Before any AI can learn, you must become a Data Forger, transforming chaotic information into clean, structured datasets.',
+        teachingContent: 'Data comes in two types: structured (tables, databases) and unstructured (images, text, audio). Data preprocessing includes: collecting data, cleaning (removing errors/duplicates), handling missing values (fill with average, remove, or predict), normalization (scaling 0-1), standardization (mean=0, std=1), and train-test split (80/20 rule). Remember: "Garbage in, garbage out" - your model is only as good as your data!',
+        xpReward: 160,
+        challengeType: 'interactive',
+        difficulty: 'beginner',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Data preprocessing and cleaning for machine learning',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml2-v1',
+            title: 'Data Preprocessing in Machine Learning',
+            channelTitle: 'Krish Naik',
+            thumbnailUrl: 'https://i.ytimg.com/vi/7sbeT5lRi5I/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=7sbeT5lRi5I'
+          },
+          {
+            id: 'aiml2-v2',
+            title: 'Pandas Data Cleaning Tutorial',
+            channelTitle: 'Keith Galli',
+            thumbnailUrl: 'https://i.ytimg.com/vi/ZOX18HObkow/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=ZOX18HObkow'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-2-q1',
+            question: 'Why is data preprocessing important?',
+            options: ['It makes models train faster', 'Clean data leads to better model performance', 'It reduces storage needs', 'It makes code look better'],
+            correctAnswer: 'Clean data leads to better model performance',
+            explanation: 'Quality data directly impacts model accuracy. Missing values, outliers, and inconsistencies can confuse the model and lead to poor predictions.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-2-q2',
+            question: 'What is normalization in data preprocessing?',
+            options: ['Removing duplicate data', 'Scaling features to a range like 0-1', 'Fixing spelling errors', 'Converting text to numbers'],
+            correctAnswer: 'Scaling features to a range like 0-1',
+            explanation: 'Normalization scales numerical features to a common range (often 0-1) so features with larger values don\'t dominate the learning process.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-2-q3',
+            question: 'Why do we split data into training and testing sets?',
+            options: ['To save memory', 'To evaluate how well the model generalizes to new data', 'To make training faster', 'To balance the classes'],
+            correctAnswer: 'To evaluate how well the model generalizes to new data',
+            explanation: 'The test set simulates real-world data the model hasn\'t seen before, helping us measure if it can make accurate predictions on new examples.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Pandas Documentation',
+            url: 'https://pandas.pydata.org/docs/',
+            type: 'documentation',
+            description: 'Official guide for data manipulation in Python'
+          },
+          {
+            title: 'Kaggle Learn - Pandas',
+            url: 'https://www.kaggle.com/learn/pandas',
+            type: 'course',
+            description: 'Interactive Pandas tutorials with practice'
+          },
+          {
+            title: 'NumPy Tutorial',
+            url: 'https://numpy.org/doc/stable/user/quickstart.html',
+            type: 'documentation',
+            description: 'Essential library for numerical computing'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-data-smith-2',
+          type: 'sorting-conveyor',
+          title: 'Data Smith',
+          description: 'Collect and clean corrupted data shards',
+          objective: 'Transform messy data into clean datasets',
+          controls: 'Click to clean, fill gaps, and forge data',
+          passingScore: 85,
+          importanceWhy: 'Data scientists spend 80% of their time cleaning data. This game simulates real challenges - missing values, outliers, inconsistent formats. Master this and you\'ll understand why quality data is more valuable than complex algorithms.'
+        }
+      },
+      {
+        id: 'aiml-3',
+        courseId: 'aiml',
+        title: 'The Algorithm Arena',
+        description: 'ML Algorithms Basics',
+        story: 'The world is run by powerful entities — Algorithms — each with its own strength. To proceed, you must battle and learn from them.',
+        narrative: 'Every machine learning problem requires the right algorithm. Linear Regression predicts numbers, Logistic Regression classifies categories, Decision Trees make logical choices, K-Means groups similar data. Each algorithm is a tool in your arsenal - choose wisely!',
+        teachingContent: 'ML Algorithms: Linear Regression (predict continuous values like house prices), Logistic Regression (binary classification like spam/not spam), Decision Trees (tree-like model of decisions), Random Forests (many decision trees voting together), KNN (K-Nearest Neighbors - classify based on similar examples), Naive Bayes (probability-based classification), K-Means (clustering similar data points). Each has strengths: speed, accuracy, interpretability. Choose based on your problem type and data size.',
+        xpReward: 180,
         challengeType: 'interactive',
         difficulty: 'intermediate',
         unlocked: false,
         completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Machine learning algorithms explained with examples',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml3-v1',
+            title: 'Machine Learning Algorithms Explained',
+            channelTitle: 'StatQuest',
+            thumbnailUrl: 'https://i.ytimg.com/vi/yN7ypxC7838/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=yN7ypxC7838'
+          },
+          {
+            id: 'aiml3-v2',
+            title: 'All Machine Learning Models Explained in 6 Minutes',
+            channelTitle: 'The AI Hacker',
+            thumbnailUrl: 'https://i.ytimg.com/vi/yN7ypxC7838/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=yN7ypxC7838'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-3-q1',
+            question: 'Which algorithm would you use to predict house prices based on features like size and location?',
+            options: ['K-Means Clustering', 'Linear Regression', 'Logistic Regression', 'Decision Tree'],
+            correctAnswer: 'Linear Regression',
+            explanation: 'Linear Regression predicts continuous numerical values (like prices) based on input features. It finds the best-fit line through your data points.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-3-q2',
+            question: 'What is the main advantage of Random Forests over a single Decision Tree?',
+            options: ['Faster training', 'More accurate and less prone to overfitting', 'Easier to interpret', 'Uses less memory'],
+            correctAnswer: 'More accurate and less prone to overfitting',
+            explanation: 'Random Forests combine multiple decision trees (ensemble learning), reducing overfitting and generally producing more reliable predictions than any single tree.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-3-q3',
+            question: 'What type of problem is K-Means Clustering used for?',
+            options: ['Predicting continuous values', 'Binary classification', 'Grouping similar data points together', 'Time series forecasting'],
+            correctAnswer: 'Grouping similar data points together',
+            explanation: 'K-Means is an unsupervised learning algorithm that groups (clusters) similar data points together, useful for customer segmentation, image compression, and pattern discovery.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Scikit-learn Documentation',
+            url: 'https://scikit-learn.org/stable/user_guide.html',
+            type: 'documentation',
+            description: 'The most popular ML library in Python'
+          },
+          {
+            title: 'Kaggle Competitions',
+            url: 'https://www.kaggle.com/competitions',
+            type: 'practice',
+            description: 'Practice ML on real datasets with community'
+          },
+          {
+            title: 'StatQuest ML Playlist',
+            url: 'https://www.youtube.com/playlist?list=PLblh5JKOoLUICTaGLRoHQDuF_7q2GfuJF',
+            type: 'course',
+            description: 'Intuitive explanations of ML algorithms'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-algorithm-battles-3',
+          type: 'search-challenge',
+          title: 'Algorithm Battles',
+          description: 'Choose the right ML algorithm for each problem',
+          objective: 'Match algorithms to problems and understand their properties',
+          controls: 'Click to select algorithms and test them',
+          passingScore: 85,
+          importanceWhy: 'Choosing the right algorithm is like choosing the right tool for a job. This game teaches you when to use regression vs classification, when ensemble methods help, and how bias vs variance affects performance. These decisions separate good ML engineers from great ones.'
+        }
+      },
+      {
+        id: 'aiml-4',
+        courseId: 'aiml',
+        title: 'The Training Grounds',
+        description: 'Model Training & Evaluation',
+        story: 'You\'ve collected algorithms, but they\'re untrained warriors. Now, it\'s time to train them.',
+        narrative: 'A model is only as good as its training. Learn to split data properly, avoid overfitting (memorizing instead of learning), use cross-validation for robust testing, and measure performance with the right metrics. This is where theory meets practice.',
+        teachingContent: 'Training & Evaluation: Training data teaches the model, testing data evaluates it. Overfitting = model memorizes training data, fails on new data. Underfitting = model too simple to learn patterns. Cross-validation splits data into K folds for robust testing. Metrics: Accuracy (correct predictions / total), Precision (true positives / all predicted positives), Recall (true positives / all actual positives), F1 Score (balance of precision and recall), Confusion Matrix (visualizes errors). Hyperparameters (learning rate, depth, etc.) control how the model learns.',
+        xpReward: 200,
+        challengeType: 'interactive',
+        difficulty: 'intermediate',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Model training, overfitting, and evaluation metrics explained',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml4-v1',
+            title: 'Overfitting and Underfitting Explained',
+            channelTitle: 'StatQuest',
+            thumbnailUrl: 'https://i.ytimg.com/vi/EuBBz3bI-aA/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=EuBBz3bI-aA'
+          },
+          {
+            id: 'aiml4-v2',
+            title: 'Confusion Matrix Explained',
+            channelTitle: 'Normalized Nerd',
+            thumbnailUrl: 'https://i.ytimg.com/vi/Kdsp6soqA7o/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=Kdsp6soqA7o'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-4-q1',
+            question: 'What is overfitting?',
+            options: ['Model is too simple', 'Model memorizes training data and fails on new data', 'Model trains too fast', 'Model has too few parameters'],
+            correctAnswer: 'Model memorizes training data and fails on new data',
+            explanation: 'Overfitting occurs when a model learns the noise and specific patterns in training data so well that it fails to generalize to new, unseen data.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-4-q2',
+            question: 'Why do we use a separate test set?',
+            options: ['To save training time', 'To measure how well the model works on data it hasn\'t seen', 'To balance the dataset', 'To speed up predictions'],
+            correctAnswer: 'To measure how well the model works on data it hasn\'t seen',
+            explanation: 'The test set provides an unbiased evaluation of how the model will perform in the real world on completely new data.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-4-q3',
+            question: 'What does high precision and low recall indicate?',
+            options: ['Model finds all positive cases but makes many false positives', 'Model is very selective but misses many positive cases', 'Model is perfect', 'Model is completely random'],
+            correctAnswer: 'Model is very selective but misses many positive cases',
+            explanation: 'High precision means when the model says "yes" it\'s usually right, but low recall means it misses many actual positive cases by being too conservative.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Cross-Validation Explained - Kaggle',
+            url: 'https://www.kaggle.com/code/alexisbcook/cross-validation',
+            type: 'tutorial',
+            description: 'Interactive notebook on validation strategies'
+          },
+          {
+            title: 'Model Evaluation Metrics',
+            url: 'https://scikit-learn.org/stable/modules/model_evaluation.html',
+            type: 'documentation',
+            description: 'Complete guide to ML evaluation metrics'
+          },
+          {
+            title: 'Hyperparameter Tuning Guide',
+            url: 'https://www.kaggle.com/learn/intermediate-machine-learning',
+            type: 'course',
+            description: 'Learn to optimize model performance'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-train-titans-4',
+          type: 'pattern-builder',
+          title: 'Train the Titans',
+          description: 'Tune hyperparameters to optimize model performance',
+          objective: 'Adjust learning rate, depth, and other parameters to improve accuracy',
+          controls: 'Click to adjust parameters and train',
+          passingScore: 85,
+          importanceWhy: 'Hyperparameter tuning can improve model accuracy by 10-30%. This game simulates the trial-and-error process of finding optimal settings. You\'ll learn when to increase model complexity vs reduce overfitting - a skill that defines expert ML practitioners.'
+        }
+      },
+      {
+        id: 'aiml-5',
+        courseId: 'aiml',
+        title: 'The Neural Sanctum',
+        description: 'Intro to Neural Networks',
+        story: 'Deep inside the Matrix, lies the Neural Sanctum — where intelligence is born. You\'ll learn how neurons form networks that can see, speak, and think.',
+        narrative: 'Neural networks are inspired by the human brain. Individual neurons combine inputs, apply weights, use activation functions to decide if they "fire", and pass signals forward. Layer by layer, networks learn to recognize patterns - from simple edges to complex faces.',
+        teachingContent: 'Neural Networks: Artificial neurons mimic brain cells. Each neuron: receives inputs, multiplies by weights, adds bias, applies activation function (ReLU, Sigmoid, Tanh). Layers: Input layer (receives data), Hidden layers (extract features), Output layer (makes prediction). Feedforward: data flows forward through network. Backpropagation: errors flow backward to update weights. Frameworks: TensorFlow and PyTorch make building networks easy. Deep Learning = neural networks with many hidden layers.',
+        xpReward: 220,
+        challengeType: 'interactive',
+        difficulty: 'intermediate',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Neural networks and deep learning fundamentals',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml5-v1',
+            title: 'But what is a Neural Network? | Chapter 1, Deep Learning',
+            channelTitle: '3Blue1Brown',
+            thumbnailUrl: 'https://i.ytimg.com/vi/aircAruvnKk/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=aircAruvnKk'
+          },
+          {
+            id: 'aiml5-v2',
+            title: 'Neural Networks Explained in 5 Minutes',
+            channelTitle: 'IBM Technology',
+            thumbnailUrl: 'https://i.ytimg.com/vi/jmmW0F0biz0/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=jmmW0F0biz0'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-5-q1',
+            question: 'What is an activation function\'s purpose in a neural network?',
+            options: ['To store data', 'To introduce non-linearity so networks can learn complex patterns', 'To speed up training', 'To reduce memory usage'],
+            correctAnswer: 'To introduce non-linearity so networks can learn complex patterns',
+            explanation: 'Activation functions like ReLU or Sigmoid add non-linearity, allowing neural networks to learn complex relationships. Without them, stacked layers would just be one large linear function.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-5-q2',
+            question: 'What is backpropagation?',
+            options: ['A method to compress neural networks', 'The algorithm that updates weights by propagating errors backward', 'A type of neural network layer', 'A data preprocessing technique'],
+            correctAnswer: 'The algorithm that updates weights by propagating errors backward',
+            explanation: 'Backpropagation calculates how much each weight contributed to the error and adjusts them to reduce that error, enabling the network to learn from mistakes.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-5-q3',
+            question: 'What makes a neural network "deep"?',
+            options: ['It processes images', 'It has many hidden layers', 'It uses a lot of data', 'It runs on GPUs'],
+            correctAnswer: 'It has many hidden layers',
+            explanation: 'Deep learning refers to neural networks with multiple (many) hidden layers between input and output, allowing them to learn hierarchical representations of data.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'TensorFlow Tutorials',
+            url: 'https://www.tensorflow.org/tutorials',
+            type: 'documentation',
+            description: 'Official TensorFlow guides and tutorials'
+          },
+          {
+            title: 'PyTorch Tutorials',
+            url: 'https://pytorch.org/tutorials/',
+            type: 'documentation',
+            description: 'Learn PyTorch from basics to advanced'
+          },
+          {
+            title: 'Fast.ai Course',
+            url: 'https://www.fast.ai/',
+            type: 'course',
+            description: 'Practical deep learning for coders'
+          },
+          {
+            title: 'Neural Networks Playground',
+            url: 'https://playground.tensorflow.org/',
+            type: 'practice',
+            description: 'Interactive visualization of neural networks'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-neural-core-5',
+          type: 'pattern-builder',
+          title: 'Build the Neural Core',
+          description: 'Connect neurons to form working neural networks',
+          objective: 'Complete circuits by connecting activation → hidden → output correctly',
+          controls: 'Click to connect neurons and watch data flow',
+          passingScore: 85,
+          importanceWhy: 'Visualizing how data flows through neural networks builds intuition. This game shows how individual neurons combine to recognize patterns - start with binary classification, advance to multi-class. Understanding architecture is key to designing effective deep learning models.'
+        }
+      },
+      {
+        id: 'aiml-6',
+        courseId: 'aiml',
+        title: 'The Vision Tower',
+        description: 'Computer Vision',
+        story: 'You gain access to the Vision Tower — machines that see the world. Restore their sight by learning how images are processed.',
+        narrative: 'Computer vision enables machines to see and understand images. Convolutional Neural Networks (CNNs) are the key - they use filters to detect edges, textures, and objects. From self-driving cars to medical imaging, vision AI is transforming how machines perceive reality.',
+        teachingContent: 'Computer Vision: Images are grids of pixels (RGB values). Convolutional Neural Networks (CNNs): Convolutional layers apply filters to detect features (edges, textures, shapes), Pooling layers reduce size while keeping important features, Feature maps show what the network "sees", Fully connected layers at the end make predictions. Applications: Image classification (cat vs dog), Object detection (finding objects), Segmentation (outlining objects), Face recognition. Popular architectures: LeNet, AlexNet, VGG, ResNet.',
+        xpReward: 240,
+        challengeType: 'interactive',
+        difficulty: 'advanced',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Convolutional neural networks and computer vision',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml6-v1',
+            title: 'Convolutional Neural Networks Explained',
+            channelTitle: 'Computerphile',
+            thumbnailUrl: 'https://i.ytimg.com/vi/py5byOOHZM8/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=py5byOOHZM8'
+          },
+          {
+            id: 'aiml6-v2',
+            title: 'How Convolutional Neural Networks Work',
+            channelTitle: 'Brandon Rohrer',
+            thumbnailUrl: 'https://i.ytimg.com/vi/FmpDIaiMIeA/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=FmpDIaiMIeA'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-6-q1',
+            question: 'What is the purpose of convolutional layers in a CNN?',
+            options: ['To reduce image size', 'To detect features like edges and textures', 'To classify the final output', 'To add color to images'],
+            correctAnswer: 'To detect features like edges and textures',
+            explanation: 'Convolutional layers apply filters that scan across images to detect local patterns like edges, corners, and textures, building up to more complex features in deeper layers.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-6-q2',
+            question: 'Why do we use pooling layers in CNNs?',
+            options: ['To increase image resolution', 'To reduce spatial dimensions and make the network more efficient', 'To add more parameters', 'To change colors'],
+            correctAnswer: 'To reduce spatial dimensions and make the network more efficient',
+            explanation: 'Pooling (like max pooling) reduces the size of feature maps, keeping the most important information while reducing computation and preventing overfitting.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-6-q3',
+            question: 'What type of problem is image classification?',
+            options: ['Regression', 'Supervised classification', 'Unsupervised clustering', 'Reinforcement learning'],
+            correctAnswer: 'Supervised classification',
+            explanation: 'Image classification is supervised learning where the model learns from labeled examples (images with known categories) to predict categories of new images.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'CS231n: CNN for Visual Recognition',
+            url: 'http://cs231n.stanford.edu/',
+            type: 'course',
+            description: 'Stanford\'s famous computer vision course'
+          },
+          {
+            title: 'Keras Computer Vision Examples',
+            url: 'https://keras.io/examples/vision/',
+            type: 'tutorial',
+            description: 'Practical CNN implementations'
+          },
+          {
+            title: 'ImageNet Challenge',
+            url: 'https://www.image-net.org/',
+            type: 'practice',
+            description: 'Famous image recognition benchmark'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-vision-tower-6',
+          type: 'pattern-builder',
+          title: 'Rebuild the Vision',
+          description: 'Use convolution filters to process and reconstruct images',
+          objective: 'Apply correct filters to restore corrupted image statues',
+          controls: 'Click to apply edge detection, blur, and feature filters',
+          passingScore: 85,
+          importanceWhy: 'Understanding how CNNs "see" is crucial for debugging vision models. This game lets you apply real filters (edge detection, blur, sharpen) to see how networks extract features layer by layer. It\'s the foundation of facial recognition, autonomous vehicles, and medical imaging.'
+        }
+      },
+      {
+        id: 'aiml-7',
+        courseId: 'aiml',
+        title: 'The Voice Realm',
+        description: 'NLP & Chatbots',
+        story: 'Now, the Matrix starts to speak. You must understand and respond.',
+        narrative: 'Natural Language Processing (NLP) enables machines to understand human language. From chatbots to translation, sentiment analysis to text generation - NLP is how AI communicates. You\'ll learn to process text, extract meaning, and build conversational AI.',
+        teachingContent: 'NLP Basics: Tokenization (split text into words/tokens), Stemming (reduce to root: running → run), Lemmatization (better stemming: better → good), Stop words (remove "the", "is", "and"). Bag of Words (count word frequency), TF-IDF (weight by importance). RNNs process sequences, LSTMs remember long-term context, Transformers (like GPT) revolutionized NLP with attention mechanisms. Chatbots: Rule-based (if/else), Retrieval-based (pick from responses), Generative (create new responses).',
+        xpReward: 260,
+        challengeType: 'interactive',
+        difficulty: 'advanced',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Natural language processing and chatbots explained',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml7-v1',
+            title: 'Natural Language Processing in 5 Minutes',
+            channelTitle: 'AI Explained',
+            thumbnailUrl: 'https://i.ytimg.com/vi/fOvTtapxa9c/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=fOvTtapxa9c'
+          },
+          {
+            id: 'aiml7-v2',
+            title: 'Illustrated Guide to Transformers',
+            channelTitle: 'Jay Alammar',
+            thumbnailUrl: 'https://i.ytimg.com/vi/4Bdc55j80l8/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=4Bdc55j80l8'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-7-q1',
+            question: 'What is tokenization in NLP?',
+            options: ['Translating text to another language', 'Breaking text into individual words or tokens', 'Removing punctuation', 'Checking grammar'],
+            correctAnswer: 'Breaking text into individual words or tokens',
+            explanation: 'Tokenization splits text into meaningful units (tokens) - usually words or subwords - which is the first step in most NLP pipelines.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-7-q2',
+            question: 'What advantage do Transformers have over RNNs for NLP?',
+            options: ['They use less memory', 'They can process sequences in parallel and capture long-range dependencies better', 'They don\'t need training', 'They only work on short text'],
+            correctAnswer: 'They can process sequences in parallel and capture long-range dependencies better',
+            explanation: 'Transformers use attention mechanisms to process all tokens simultaneously and relate distant words effectively, unlike RNNs which process sequentially and struggle with long-term memory.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-7-q3',
+            question: 'What type of chatbot is ChatGPT?',
+            options: ['Rule-based', 'Retrieval-based', 'Generative', 'Random'],
+            correctAnswer: 'Generative',
+            explanation: 'ChatGPT is a generative model that creates new responses based on its training, rather than selecting from pre-written responses or following hardcoded rules.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Hugging Face NLP Course',
+            url: 'https://huggingface.co/learn/nlp-course',
+            type: 'course',
+            description: 'Comprehensive course on modern NLP'
+          },
+          {
+            title: 'spaCy Tutorials',
+            url: 'https://spacy.io/usage',
+            type: 'documentation',
+            description: 'Industrial-strength NLP library'
+          },
+          {
+            title: 'Building Chatbots with Python',
+            url: 'https://www.datacamp.com/courses/building-chatbots-in-python',
+            type: 'course',
+            description: 'Hands-on chatbot development'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-echo-words-7',
+          type: 'pattern-builder',
+          title: 'Echo of Words',
+          description: 'Decode and clean corrupted text messages',
+          objective: 'Process text data and train a mini chatbot',
+          controls: 'Click to tokenize, clean, and respond',
+          passingScore: 85,
+          importanceWhy: 'Text processing is everywhere - search engines, spam filters, autocomplete, translation. This game teaches you to clean messy text and understand how chatbots map questions to answers. It\'s the foundation of conversational AI that powers virtual assistants and customer service bots.'
+        }
+      },
+      {
+        id: 'aiml-8',
+        courseId: 'aiml',
+        title: 'The Sage\'s Code',
+        description: 'AI Ethics & Explainability',
+        story: 'Power must be balanced with wisdom. Learn the ethics of using AI responsibly.',
+        narrative: 'AI is powerful, but with power comes responsibility. Biased data creates biased AI. Models can discriminate, invade privacy, or be misused. You must learn to build fair, transparent, explainable AI that serves humanity ethically.',
+        teachingContent: 'AI Ethics: Bias in data leads to biased predictions (facial recognition less accurate on minorities, hiring AI favoring men). Fairness means equal treatment across groups. Explainable AI (XAI) helps us understand why models make decisions. Privacy concerns: models can memorize sensitive training data. Transparency: users should know when AI makes decisions about them. Accountability: who\'s responsible when AI makes mistakes? Responsible AI practices: diverse datasets, regular bias testing, human oversight, clear documentation.',
+        xpReward: 280,
+        challengeType: 'interactive',
+        difficulty: 'advanced',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'AI ethics, bias, and responsible artificial intelligence',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml8-v1',
+            title: 'AI Ethics and Bias Explained',
+            channelTitle: 'CrashCourse AI',
+            thumbnailUrl: 'https://i.ytimg.com/vi/AlusjivRJV0/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=AlusjivRJV0'
+          },
+          {
+            id: 'aiml8-v2',
+            title: 'Explainable AI (XAI) Explained',
+            channelTitle: 'IBM Technology',
+            thumbnailUrl: 'https://i.ytimg.com/vi/T4TsOA-U7dk/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=T4TsOA-U7dk'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-8-q1',
+            question: 'Why is AI bias a serious concern?',
+            options: ['It makes models slower', 'Biased models can discriminate and harm marginalized groups', 'It increases training costs', 'It makes models harder to deploy'],
+            correctAnswer: 'Biased models can discriminate and harm marginalized groups',
+            explanation: 'AI systems trained on biased data can perpetuate and amplify discrimination in critical areas like hiring, lending, criminal justice, and healthcare, causing real harm to people.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-8-q2',
+            question: 'What is Explainable AI (XAI)?',
+            options: ['AI that talks to humans', 'Methods to understand and interpret how AI makes decisions', 'AI that explains code', 'Simpler AI models'],
+            correctAnswer: 'Methods to understand and interpret how AI makes decisions',
+            explanation: 'XAI provides insights into why models make certain predictions, which is crucial for trust, debugging, and meeting regulatory requirements in sensitive domains.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-8-q3',
+            question: 'In the ethics of AI deployment, what does the "accountability" principle mean?',
+            options: ['Making AI faster', 'Ensuring someone is responsible for AI decisions and outcomes', 'Reducing costs', 'Increasing accuracy'],
+            correctAnswer: 'Ensuring someone is responsible for AI decisions and outcomes',
+            explanation: 'Accountability means there must be clear responsibility when AI systems make errors or cause harm, with processes to address and remedy negative outcomes.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'AI Ethics Guidelines - EU',
+            url: 'https://digital-strategy.ec.europa.eu/en/policies/expert-group-ai',
+            type: 'documentation',
+            description: 'European Union\'s ethical AI framework'
+          },
+          {
+            title: 'Responsible AI Practices - Google',
+            url: 'https://ai.google/responsibility/responsible-ai-practices/',
+            type: 'documentation',
+            description: 'Google\'s guide to responsible AI development'
+          },
+          {
+            title: 'AI Fairness 360 Toolkit',
+            url: 'https://aif360.mybluemix.net/',
+            type: 'tool',
+            description: 'IBM toolkit for detecting and mitigating bias'
+          },
+          {
+            title: 'Ethics of AI Course - MIT',
+            url: 'https://ethics.fast.ai/',
+            type: 'course',
+            description: 'Practical ethics for data scientists'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-balance-matrix-8',
+          type: 'backtracking-puzzle',
+          title: 'Balance of the Matrix',
+          description: 'Make ethical AI decisions in branching scenarios',
+          objective: 'Balance fairness, accuracy, and transparency in real-world situations',
+          controls: 'Choose decisions and see their impact on different groups',
+          passingScore: 85,
+          importanceWhy: 'AI ethics isn\'t abstract - it\'s about real decisions with real consequences. This game presents scenarios like: "High accuracy but unfair to minorities" vs "Lower accuracy but more fair". You\'ll see how bias metrics, fairness constraints, and transparency affect people\'s lives. Every AI developer needs this perspective.'
+        }
+      },
+      {
+        id: 'aiml-9',
+        courseId: 'aiml',
+        title: 'The Integration Nexus',
+        description: 'AI Projects & APIs',
+        story: 'Time to build your legacy — merge all your knowledge to create something real.',
+        narrative: 'You\'ve mastered the theory. Now build real AI applications! Use powerful APIs like OpenAI, Hugging Face, and Google Gemini to add AI to your apps. Deploy models with Flask or FastAPI. Create image classifiers, chatbots, sentiment analyzers. This is where you become a true AI architect.',
+        teachingContent: 'Real-World AI: AI APIs provide pre-trained models: OpenAI (GPT for text generation, DALL-E for images), Hugging Face (thousands of models), Google Gemini (multimodal AI). Projects: Image classification (CNN + user uploads), Chatbot (NLP + conversation logic), Sentiment analysis (classify emotions in text), Recommendation system (collaborative filtering). Deployment: Flask/FastAPI for web APIs, Streamlit for quick demos, Docker for containers, Cloud platforms (AWS, GCP, Azure) for scalability. MLOps: versioning models, monitoring performance, A/B testing.',
+        xpReward: 300,
+        challengeType: 'interactive',
+        difficulty: 'advanced',
+        unlocked: false,
+        completed: false,
+        currentStage: 'narrative',
+        videoTopic: 'Building and deploying machine learning projects with APIs',
+        aiSuggestedVideos: [
+          {
+            id: 'aiml9-v1',
+            title: 'Deploy Machine Learning Models with Flask',
+            channelTitle: 'Krish Naik',
+            thumbnailUrl: 'https://i.ytimg.com/vi/UbCWoMf80PY/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=UbCWoMf80PY'
+          },
+          {
+            id: 'aiml9-v2',
+            title: 'OpenAI API Tutorial',
+            channelTitle: 'Tech With Tim',
+            thumbnailUrl: 'https://i.ytimg.com/vi/c-g6epk3fFE/maxresdefault.jpg',
+            videoUrl: 'https://www.youtube.com/watch?v=c-g6epk3fFE'
+          }
+        ],
+        quizQuestions: [
+          {
+            id: 'aiml-9-q1',
+            question: 'Why use AI APIs instead of building models from scratch?',
+            options: ['APIs are always free', 'APIs provide access to powerful pre-trained models, saving time and resources', 'APIs are faster to run', 'You don\'t need data with APIs'],
+            correctAnswer: 'APIs provide access to powerful pre-trained models, saving time and resources',
+            explanation: 'AI APIs let you leverage models trained on massive datasets with huge computational resources, which would be impractical to replicate. You get state-of-the-art capabilities immediately.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-9-q2',
+            question: 'What is Flask commonly used for in ML projects?',
+            options: ['Training models', 'Creating web APIs to serve model predictions', 'Data cleaning', 'Image processing'],
+            correctAnswer: 'Creating web APIs to serve model predictions',
+            explanation: 'Flask is a lightweight Python web framework perfect for creating REST APIs that receive input, run model inference, and return predictions to users or applications.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'aiml-9-q3',
+            question: 'What is MLOps?',
+            options: ['A type of neural network', 'Practices for deploying, monitoring, and maintaining ML systems in production', 'A programming language', 'A data visualization tool'],
+            correctAnswer: 'Practices for deploying, monitoring, and maintaining ML systems in production',
+            explanation: 'MLOps (Machine Learning Operations) combines ML, DevOps, and data engineering to automate and improve the process of taking ML models from development to production.',
+            type: 'multiple-choice'
+          }
+        ],
+        externalResources: [
+          {
+            title: 'OpenAI API Documentation',
+            url: 'https://platform.openai.com/docs',
+            type: 'documentation',
+            description: 'Official guide to OpenAI\'s powerful AI models'
+          },
+          {
+            title: 'Hugging Face Models',
+            url: 'https://huggingface.co/models',
+            type: 'platform',
+            description: 'Thousands of pre-trained AI models'
+          },
+          {
+            title: 'FastAPI ML Tutorial',
+            url: 'https://fastapi.tiangolo.com/tutorial/',
+            type: 'tutorial',
+            description: 'Modern Python web framework for APIs'
+          },
+          {
+            title: 'End-to-End ML Projects - Kaggle',
+            url: 'https://www.kaggle.com/learn',
+            type: 'practice',
+            description: 'Complete ML workflows from data to deployment'
+          },
+          {
+            title: 'MLOps Guide',
+            url: 'https://ml-ops.org/',
+            type: 'documentation',
+            description: 'Best practices for production ML systems'
+          }
+        ],
+        gameConfig: {
+          id: 'aiml-architect-matrix-9',
+          type: 'deploy-orbit',
+          title: 'Architect of the Matrix',
+          description: 'Build and deploy your own AI-powered system',
+          objective: 'Choose tools, models, and architecture to create a working AI application',
+          controls: 'Click to select components and deploy',
+          passingScore: 90,
+          importanceWhy: 'This is your final boss - building a real AI system from scratch. You\'ll choose between different APIs (OpenAI vs Hugging Face), decide on architecture (REST vs WebSocket), handle errors, and deploy. It simulates the full stack of decisions AI engineers make daily. Complete this and you\'re ready to build real AI products.'
+        }
       }
     ]
   },
