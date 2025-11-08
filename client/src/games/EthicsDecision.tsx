@@ -100,7 +100,7 @@ export function EthicsDecision({ config, onComplete, onExit }: GameProps) {
     onComplete({
       success: percentage >= (config.passingScore || 80),
       score,
-      timeElapsed: 90 - timeLeft,
+      timeSpent: 90 - timeLeft,
       xpEarned: Math.floor(score * 2),
     });
   };

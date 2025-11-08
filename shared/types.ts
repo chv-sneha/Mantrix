@@ -11,7 +11,7 @@ export type LevelStage = 'narrative' | 'teaching-game' | 'ai-videos' | 'assessme
 
 export interface GameConfig {
   id: string;
-  type: 'loop-arena' | 'recursion-maze' | 'sorting-conveyor' | 'pattern-builder' | 'search-challenge' | 'backtracking-puzzle' | 'markup-forge' | 'style-spectrum' | 'script-circuit' | 'component-link' | 'service-runner' | 'data-bridge' | 'deploy-orbit';
+  type: 'loop-arena' | 'recursion-maze' | 'sorting-conveyor' | 'pattern-builder' | 'search-challenge' | 'backtracking-puzzle' | 'markup-forge' | 'style-spectrum' | 'script-circuit' | 'component-link' | 'service-runner' | 'data-bridge' | 'deploy-orbit' | 'data-cleaning' | 'algorithm-selection' | 'hyperparameter-tuning' | 'neural-network-builder' | 'cnn-filter' | 'nlp-processing' | 'ethics-decision';
   title: string;
   description: string;
   objective: string;

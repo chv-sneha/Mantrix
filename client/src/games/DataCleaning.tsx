@@ -63,7 +63,7 @@ export function DataCleaning({ config, onComplete, onExit }: GameProps) {
     onComplete({
       success: percentage >= (config.passingScore || 80),
       score,
-      timeElapsed: 45 - timeLeft,
+      timeSpent: 45 - timeLeft,
       xpEarned: Math.floor(score * 2),
     });
   };

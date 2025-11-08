@@ -72,7 +72,7 @@ export function CNNFilter({ config, onComplete, onExit }: GameProps) {
     onComplete({
       success: percentage >= (config.passingScore || 80),
       score,
-      timeElapsed: 60 - timeLeft,
+      timeSpent: 60 - timeLeft,
       xpEarned: Math.floor(score * 2),
     });
   };
