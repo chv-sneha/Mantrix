@@ -1,8 +1,8 @@
 import { useLearning } from "@/lib/stores/useLearning";
-import { User, Calendar, Trophy, Star } from "lucide-react";
+import { User, Calendar, Trophy, Star, LogOut } from "lucide-react";
 
 export default function Profile() {
-  const { userProgress, courses } = useLearning();
+  const { userProgress, courses, user, logout } = useLearning();
 
   const totalLevels = courses.reduce((sum, course) => sum + course.levels.length, 0);
   const completedLevels = userProgress.completedLevels.length;
@@ -22,10 +22,10 @@ export default function Profile() {
             
             <div className="flex-1 text-center md:text-left">
               <h2 className="font-game text-2xl mb-2 text-white">
-                {userProgress.userId === 'guest' ? 'Guest Player' : userProgress.userId}
+                {user?.username || 'Guest Player'}
               </h2>
               <p className="font-orbitron text-sm text-gray-400 mb-4">
-                SkillQuest Adventurer
+                {user?.email || 'SkillQuest Adventurer'}
               </p>
               
               <div className="flex flex-wrap justify-center md:justify-start gap-3">
@@ -123,8 +123,12 @@ export default function Profile() {
             <button className="w-full text-left px-4 py-3 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors font-orbitron text-sm text-white">
               📊 View Detailed Stats
             </button>
-            <button className="w-full text-left px-4 py-3 rounded-lg bg-red-900 hover:bg-red-800 transition-colors font-orbitron text-sm text-white">
-              🔄 Reset Progress
+            <button
+              onClick={logout}
+              className="w-full flex items-center gap-2 px-4 py-3 rounded-lg bg-red-900 hover:bg-red-800 transition-colors font-orbitron text-sm text-white"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
             </button>
           </div>
         </div>

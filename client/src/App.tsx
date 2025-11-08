@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { useAudio } from "./lib/stores/useAudio";
+import { useLearning } from "./lib/stores/useLearning";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
 import Challenge from "./pages/Challenge";
+import Leaderboard from "./pages/Leaderboard";
+import Auth from "./pages/Auth";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const { setBackgroundMusic, setHitSound, setSuccessSound, isMuted } = useAudio();
+  const { user } = useLearning();
 
   useEffect(() => {
     const bgMusic = new Audio('/sounds/background.mp3');
@@ -32,6 +36,10 @@ function App() {
     };
   }, [setBackgroundMusic, setHitSound, setSuccessSound, isMuted]);
 
+  if (!user) {
+    return <Auth onNavigate={setCurrentPage} />;
+  }
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -44,6 +52,8 @@ function App() {
         return <Profile />;
       case 'challenge':
         return <Challenge onNavigate={setCurrentPage} />;
+      case 'leaderboard':
+        return <Leaderboard />;
       default:
         return <Home onNavigate={setCurrentPage} />;
     }

@@ -132,6 +132,7 @@ export class DBStorage implements IStorage {
   }
 
   async getTopUsers(limit: number = 10): Promise<Array<User & { totalXP: number; level: number }>> {
+    const { desc } = await import("drizzle-orm");
     const result = await db
       .select({
         id: users.id,
@@ -144,7 +145,7 @@ export class DBStorage implements IStorage {
       })
       .from(users)
       .leftJoin(userProgress, eq(users.id, userProgress.userId))
-      .orderBy(userProgress.totalXP)
+      .orderBy(desc(userProgress.totalXP))
       .limit(limit);
     
     return result as Array<User & { totalXP: number; level: number }>;

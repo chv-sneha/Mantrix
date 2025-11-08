@@ -1,4 +1,4 @@
-import { Home, BookOpen, Trophy, User } from "lucide-react";
+import { Home, BookOpen, Trophy, User, Award } from "lucide-react";
 import { useLearning } from "@/lib/stores/useLearning";
 
 interface NavigationProps {
@@ -13,6 +13,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
     { id: 'home', label: 'Home', icon: Home },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'progress', label: 'Progress', icon: Trophy },
+    { id: 'leaderboard', label: 'Leaderboard', icon: Award },
     { id: 'profile', label: 'Profile', icon: User },
   ];
 

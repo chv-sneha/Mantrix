@@ -2,16 +2,28 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Course, Level, UserProgress, Badge, AICompanionState } from "@shared/types";
 
+interface User {
+  id: number;
+  username: string;
+  email: string | null;
+}
+
 interface LearningState {
+  user: User | null;
   courses: Course[];
   userProgress: UserProgress;
   aiCompanion: AICompanionState;
   
+  login: (username: string, password: string) => Promise<void>;
+  signup: (username: string, password: string, email?: string) => Promise<void>;
+  logout: () => void;
+  syncProgress: () => Promise<void>;
+  
   setCourses: (courses: Course[]) => void;
   selectCourse: (courseId: string) => void;
   selectLevel: (levelId: string) => void;
-  completeLevel: (levelId: string, xpEarned: number) => void;
-  addBadge: (badge: Badge) => void;
+  completeLevel: (levelId: string, xpEarned: number) => Promise<void>;
+  addBadge: (badge: Badge) => Promise<void>;
   updateAIMessages: (message: { role: 'user' | 'assistant'; content: string }) => void;
   toggleAICompanion: () => void;
   setCurrentHint: (hint: string | null) => void;
@@ -178,7 +190,8 @@ const initialCourses: Course[] = [
 
 export const useLearning = create<LearningState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      user: null,
       courses: initialCourses,
       userProgress: {
         userId: 'guest',
@@ -194,6 +207,97 @@ export const useLearning = create<LearningState>()(
         messages: [],
         currentHint: null,
         adaptiveDifficulty: 1,
+      },
+      
+      login: async (username: string, password: string) => {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Login failed');
+        }
+        
+        const data = await response.json();
+        set({ user: data.user });
+        
+        await get().syncProgress();
+      },
+      
+      signup: async (username: string, password: string, email?: string) => {
+        const response = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, email }),
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Signup failed');
+        }
+        
+        const data = await response.json();
+        set({ user: data.user });
+        
+        await get().syncProgress();
+      },
+      
+      logout: () => {
+        set({
+          user: null,
+          userProgress: {
+            userId: 'guest',
+            totalXP: 0,
+            level: 1,
+            badges: [],
+            completedLevels: [],
+            currentCourse: null,
+            currentLevel: null,
+          }
+        });
+      },
+      
+      syncProgress: async () => {
+        const { user } = get();
+        if (!user) return;
+        
+        try {
+          const response = await fetch(`/api/progress`);
+          if (response.ok) {
+            const data = await response.json();
+            
+            if (data.progress) {
+              set((state) => ({
+                userProgress: {
+                  userId: user.id.toString(),
+                  totalXP: data.progress.totalXP || 0,
+                  level: data.progress.level || 1,
+                  badges: data.badges || [],
+                  completedLevels: data.completedLevels?.map((cl: any) => cl.levelId) || [],
+                  currentCourse: data.progress.currentCourse,
+                  currentLevel: data.progress.currentLevel,
+                },
+                courses: state.courses.map(course => ({
+                  ...course,
+                  levels: course.levels.map((level, index) => {
+                    const isCompleted = data.completedLevels?.some((cl: any) => cl.levelId === level.id);
+                    const prevCompleted = index === 0 || data.completedLevels?.some((cl: any) => cl.levelId === course.levels[index - 1].id);
+                    return {
+                      ...level,
+                      completed: isCompleted,
+                      unlocked: index === 0 || prevCompleted,
+                    };
+                  })
+                }))
+              }));
+            }
+          }
+        } catch (error) {
+          console.error('Failed to sync progress:', error);
+        }
       },
       
       setCourses: (courses) => set({ courses }),
@@ -213,11 +317,14 @@ export const useLearning = create<LearningState>()(
         }
       })),
       
-      completeLevel: (levelId, xpEarned) => set((state) => {
-        const newTotalXP = state.userProgress.totalXP + xpEarned;
+      completeLevel: async (levelId, xpEarned) => {
+        const { user, userProgress, courses } = get();
+        const newTotalXP = userProgress.totalXP + xpEarned;
         const newLevel = Math.floor(newTotalXP / 500) + 1;
         
-        const updatedCourses = state.courses.map(course => ({
+        const courseId = courses.find(c => c.levels.some(l => l.id === levelId))?.id || '';
+        
+        const updatedCourses = courses.map(course => ({
           ...course,
           levels: course.levels.map((level, index) => {
             if (level.id === levelId) {
@@ -230,23 +337,68 @@ export const useLearning = create<LearningState>()(
           })
         }));
         
-        return {
+        set({
           courses: updatedCourses,
           userProgress: {
-            ...state.userProgress,
+            ...userProgress,
             totalXP: newTotalXP,
             level: newLevel,
-            completedLevels: [...state.userProgress.completedLevels, levelId],
+            completedLevels: [...userProgress.completedLevels, levelId],
           }
-        };
-      }),
-      
-      addBadge: (badge) => set((state) => ({
-        userProgress: {
-          ...state.userProgress,
-          badges: [...state.userProgress.badges, badge],
+        });
+        
+        if (user) {
+          try {
+            await fetch('/api/progress/complete-level', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ levelId, courseId, xpEarned }),
+            });
+            
+            await fetch('/api/progress/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                totalXP: newTotalXP,
+                level: newLevel,
+                currentCourse: courseId,
+                currentLevel: levelId,
+              }),
+            });
+          } catch (error) {
+            console.error('Failed to save progress to database:', error);
+          }
         }
-      })),
+      },
+      
+      addBadge: async (badge) => {
+        const { user } = get();
+        
+        set((state) => ({
+          userProgress: {
+            ...state.userProgress,
+            badges: [...state.userProgress.badges, badge],
+          }
+        }));
+        
+        if (user) {
+          try {
+            await fetch('/api/badges/earn', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                badgeId: badge.id,
+                name: badge.name,
+                description: badge.description,
+                icon: badge.icon,
+                rarity: badge.rarity || 'common',
+              }),
+            });
+          } catch (error) {
+            console.error('Failed to save badge to database:', error);
+          }
+        }
+      },
       
       updateAIMessages: (message) => set((state) => ({
         aiCompanion: {
