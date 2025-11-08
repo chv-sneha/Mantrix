@@ -71,9 +71,9 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 3001
+  // Serve the app on port 5000 for Replit webview
   // this serves both the API and the client
-  const port = 3001;
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : Math.floor(Math.random() * 1000) + 4000;
   server.listen(port, () => {
     log(`serving on port ${port}`);
   });
