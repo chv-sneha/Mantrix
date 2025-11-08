@@ -2023,7 +2023,7 @@ const initialCourses: Course[] = [
             title: 'Observability Engineering Book',
             url: 'https://www.oreilly.com/library/view/observability-engineering/9781492076438/',
             type: 'neetcode',
-            difficulty: 'advanced',
+            difficulty: 'hard',
             description: 'Deep dive into observability practices'
           }
         ],
@@ -2113,7 +2113,7 @@ const initialCourses: Course[] = [
             title: 'DevOps Roadmap',
             url: 'https://roadmap.sh/devops',
             type: 'neetcode',
-            difficulty: 'advanced',
+            difficulty: 'hard',
             description: 'Complete DevOps learning path'
           },
           {
