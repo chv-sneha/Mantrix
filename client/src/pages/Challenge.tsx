@@ -4,6 +4,8 @@ import { ArrowLeft, Lightbulb, Send, CheckCircle } from "lucide-react";
 import { useAudio } from "@/lib/stores/useAudio";
 import VideoRecommendations from "@/components/VideoRecommendations";
 import TeachingGame from "@/components/TeachingGame";
+import { AssessmentHub } from "@/components/AssessmentHub";
+import { ResourcesPanel } from "@/components/ResourcesPanel";
 
 interface ChallengeProps {
   onNavigate: (page: string) => void;
@@ -70,6 +72,17 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     advanceStage(currentLevel.id, 'assessment');
   };
 
+  const handleAssessmentComplete = () => {
+    if (hasGame) {
+      advanceStage(currentLevel.id, 'practice-game');
+    } else if (currentLevel.externalResources && currentLevel.externalResources.length > 0) {
+      advanceStage(currentLevel.id, 'resources');
+    } else {
+      advanceStage(currentLevel.id, 'complete');
+      onNavigate('courses');
+    }
+  };
+
   const handleStartGame = () => {
     advanceStage(currentLevel.id, 'practice-game');
     const success = startGame(currentLevel.id);
@@ -78,6 +91,11 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     } else {
       console.error('Failed to start game');
     }
+  };
+
+  const handleResourcesComplete = () => {
+    advanceStage(currentLevel.id, 'complete');
+    onNavigate('courses');
   };
 
   const handleAIChat = () => {
@@ -192,15 +210,52 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
   if (currentStage === 'ai-videos') {
     return (
       <VideoRecommendations
-        topic={currentLevel.title}
+        topic={currentLevel.videoTopic || currentLevel.title}
         difficulty={currentLevel.difficulty}
         onComplete={handleVideosComplete}
       />
     );
   }
 
-  const isAssessmentStage = currentStage === 'assessment';
+  if (currentStage === 'assessment') {
+    return (
+      <AssessmentHub
+        level={currentLevel}
+        onComplete={handleAssessmentComplete}
+        onAIHelp={toggleAICompanion}
+      />
+    );
+  }
 
+  if (currentStage === 'practice-game' && hasGame) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border-2 border-purple-500 p-12 text-center max-w-2xl">
+          <h1 className="font-game text-4xl text-purple-300 mb-6">Ready to Play?</h1>
+          <p className="font-orbitron text-gray-300 mb-8">
+            You've completed the assessment! Now put your skills to the test in the practice game.
+          </p>
+          <button
+            onClick={handleStartGame}
+            className="px-8 py-4 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 font-game text-xl text-white transition-all glow"
+          >
+            🎮 Launch Game
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentStage === 'resources') {
+    return (
+      <ResourcesPanel
+        resources={currentLevel.externalResources || []}
+        onComplete={handleResourcesComplete}
+      />
+    );
+  }
+
+  // Old quiz rendering - kept for backward compatibility with levels that don't have new assessment data
   const renderChallenge = () => {
     switch (currentLevel.id) {
       case 'dsa-1':
@@ -355,14 +410,6 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
                     )}
                   </div>
                   
-                  {isCorrect && hasGame && currentStage === 'assessment' && (
-                    <button
-                      onClick={handleStartGame}
-                      className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 font-game text-sm text-white transition-all duration-300 glow"
-                    >
-                      🎮 Start Mini-Game
-                    </button>
-                  )}
                 </div>
               )}
 

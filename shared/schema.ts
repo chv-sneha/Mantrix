@@ -76,6 +76,20 @@ export const behavioralMetrics = pgTable("behavioral_metrics", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const codingAttempts = pgTable("coding_attempts", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  levelId: text("level_id").notNull(),
+  problemId: text("problem_id").notNull(),
+  code: text("code").notNull(),
+  language: text("language").notNull().default("javascript"),
+  passed: boolean("passed").notNull(),
+  testsPassed: integer("tests_passed").notNull(),
+  totalTests: integer("total_tests").notNull(),
+  timeSpent: integer("time_spent"),
+  submittedAt: timestamp("submitted_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -87,6 +101,7 @@ export const insertCompletedLevelSchema = createInsertSchema(completedLevels);
 export const insertBadgeSchema = createInsertSchema(badges);
 export const insertCertificateSchema = createInsertSchema(certificates);
 export const insertGameSessionSchema = createInsertSchema(gameSessions);
+export const insertCodingAttemptSchema = createInsertSchema(codingAttempts);
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -95,3 +110,4 @@ export type CompletedLevel = typeof completedLevels.$inferSelect;
 export type Badge = typeof badges.$inferSelect;
 export type Certificate = typeof certificates.$inferSelect;
 export type GameSession = typeof gameSessions.$inferSelect;
+export type CodingAttempt = typeof codingAttempts.$inferSelect;

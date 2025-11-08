@@ -40,8 +40,135 @@ const initialCourses: Course[] = [
     icon: '🧠',
     color: '#6366f1',
     levels: [
-      { id: 'dsa-1', courseId: 'dsa', title: 'Introduction to Programming', description: 'Learn loops, variables, and conditionals', story: 'Welcome to the Valley of Variables! Master loops and conditionals to begin your journey.', xpReward: 100, challengeType: 'interactive', difficulty: 'beginner', unlocked: true, completed: false, currentStage: 'narrative', gameConfig: { id: 'loop-arena-1', type: 'loop-arena', title: 'Loop Arena: Valley of Variables', description: 'Learn loops by collecting items', objective: 'Collect all items using loop patterns', controls: 'WASD or Arrow Keys', passingScore: 90 } },
-      { id: 'dsa-2', courseId: 'dsa', title: 'Arrays & Lists', description: 'Understanding indexed collections', story: 'Enter the Array Temple where data is stored in ordered sequences.', xpReward: 120, challengeType: 'interactive', difficulty: 'beginner', unlocked: false, completed: false, currentStage: 'narrative', gameConfig: { id: 'sorting-conveyor-2', type: 'sorting-conveyor', title: 'Array Organizer', description: 'Learn arrays by organizing items', objective: 'Sort items by value', controls: 'Click to swap items', passingScore: 100 } },
+      { 
+        id: 'dsa-1', 
+        courseId: 'dsa', 
+        title: 'Introduction to Programming', 
+        description: 'Learn loops, variables, and conditionals', 
+        story: 'Welcome to the Valley of Variables! Master loops and conditionals to begin your journey.', 
+        xpReward: 100, 
+        challengeType: 'interactive', 
+        difficulty: 'beginner', 
+        unlocked: true, 
+        completed: false, 
+        currentStage: 'narrative', 
+        videoTopic: 'JavaScript loops and variables for beginners',
+        quizQuestions: [
+          {
+            id: 'dsa-1-q1',
+            question: 'What will this code print? for (let i = 1; i <= 5; i++) { console.log(i); }',
+            options: ['1 2 3 4 5', '0 1 2 3 4', '1 2 3 4', '0 1 2 3 4 5'],
+            correctAnswer: '1 2 3 4 5',
+            explanation: 'The loop starts at 1 and runs while i <= 5, printing numbers 1 through 5.',
+            type: 'multiple-choice'
+          },
+          {
+            id: 'dsa-1-q2',
+            question: 'What keyword do you use to declare a variable that can be reassigned?',
+            options: ['const', 'let', 'var', 'Both let and var'],
+            correctAnswer: 'Both let and var',
+            explanation: 'Both let and var allow reassignment. const creates constants that cannot be reassigned.',
+            type: 'multiple-choice'
+          }
+        ],
+        codingProblems: [
+          {
+            id: 'dsa-1-p1',
+            title: 'Sum of Numbers',
+            description: 'Write a function that calculates the sum of numbers from 1 to n using a loop.',
+            difficulty: 'easy',
+            starterCode: 'function sumNumbers(n) {\n  // Write your code here\n  \n}',
+            solution: 'function sumNumbers(n) {\n  let sum = 0;\n  for (let i = 1; i <= n; i++) {\n    sum += i;\n  }\n  return sum;\n}',
+            testCases: [
+              { id: 't1', input: '5', expectedOutput: '15', isHidden: false },
+              { id: 't2', input: '10', expectedOutput: '55', isHidden: false },
+              { id: 't3', input: '100', expectedOutput: '5050', isHidden: true }
+            ],
+            hints: [
+              'Initialize a sum variable to 0',
+              'Use a for loop from 1 to n',
+              'Add each number to the sum'
+            ],
+            tags: ['loops', 'math', 'beginner']
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Two Sum - LeetCode',
+            url: 'https://leetcode.com/problems/two-sum/',
+            type: 'leetcode',
+            difficulty: 'easy',
+            description: 'Classic array problem using loops'
+          },
+          {
+            title: 'JavaScript Loops - MDN',
+            url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration',
+            type: 'documentation',
+            description: 'Complete guide to JavaScript loops'
+          },
+          {
+            title: 'Loops Tutorial - NeetCode',
+            url: 'https://neetcode.io/courses/lessons/loops-introduction',
+            type: 'neetcode',
+            difficulty: 'easy'
+          }
+        ],
+        gameConfig: { id: 'loop-arena-1', type: 'loop-arena', title: 'Loop Arena: Valley of Variables', description: 'Learn loops by collecting items', objective: 'Collect all items using loop patterns', controls: 'WASD or Arrow Keys', passingScore: 90 } 
+      },
+      { 
+        id: 'dsa-2', 
+        courseId: 'dsa', 
+        title: 'Arrays & Lists', 
+        description: 'Understanding indexed collections', 
+        story: 'Enter the Array Temple where data is stored in ordered sequences.', 
+        xpReward: 120, 
+        challengeType: 'interactive', 
+        difficulty: 'beginner', 
+        unlocked: false, 
+        completed: false, 
+        currentStage: 'narrative',
+        videoTopic: 'JavaScript arrays and array methods',
+        quizQuestions: [
+          {
+            id: 'dsa-2-q1',
+            question: 'How do you access the first element of an array named arr?',
+            options: ['arr[0]', 'arr[1]', 'arr.first()', 'arr.get(0)'],
+            correctAnswer: 'arr[0]',
+            explanation: 'Arrays are zero-indexed, so the first element is at index 0.',
+            type: 'multiple-choice'
+          }
+        ],
+        codingProblems: [
+          {
+            id: 'dsa-2-p1',
+            title: 'Find Maximum in Array',
+            description: 'Write a function that finds the maximum number in an array.',
+            difficulty: 'easy',
+            starterCode: 'function findMax(arr) {\n  // Write your code here\n  \n}',
+            solution: 'function findMax(arr) {\n  let max = arr[0];\n  for (let i = 1; i < arr.length; i++) {\n    if (arr[i] > max) max = arr[i];\n  }\n  return max;\n}',
+            testCases: [
+              { id: 't1', input: '[1, 5, 3, 9, 2]', expectedOutput: '9', isHidden: false },
+              { id: 't2', input: '[-5, -1, -10]', expectedOutput: '-1', isHidden: false }
+            ],
+            hints: ['Start with the first element as max', 'Loop through the array', 'Update max if you find a larger value'],
+            tags: ['arrays', 'loops', 'beginner']
+          }
+        ],
+        externalResources: [
+          {
+            title: 'Contains Duplicate - LeetCode',
+            url: 'https://leetcode.com/problems/contains-duplicate/',
+            type: 'leetcode',
+            difficulty: 'easy'
+          },
+          {
+            title: 'Arrays - NeetCode Roadmap',
+            url: 'https://neetcode.io/roadmap',
+            type: 'neetcode'
+          }
+        ],
+        gameConfig: { id: 'sorting-conveyor-2', type: 'sorting-conveyor', title: 'Array Organizer', description: 'Learn arrays by organizing items', objective: 'Sort items by value', controls: 'Click to swap items', passingScore: 100 } 
+      },
       { id: 'dsa-3', courseId: 'dsa', title: 'Searching Algorithms', description: 'Linear and binary search', story: 'In the Forest of Search, find treasures using efficient search strategies.', xpReward: 130, challengeType: 'interactive', difficulty: 'beginner', unlocked: false, completed: false, currentStage: 'narrative' },
       { id: 'dsa-4', courseId: 'dsa', title: 'Linked Lists', description: 'Understanding node-based data structures', story: 'Navigate the Chain Bridge where each node points to the next.', xpReward: 140, challengeType: 'interactive', difficulty: 'beginner', unlocked: false, completed: false, currentStage: 'narrative' },
       { id: 'dsa-5', courseId: 'dsa', title: 'Stacks', description: 'Last-In-First-Out (LIFO) operations', story: 'Climb the Tower of Stacks where the last item added is first removed.', xpReward: 150, challengeType: 'interactive', difficulty: 'beginner', unlocked: false, completed: false, currentStage: 'narrative' },
