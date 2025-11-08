@@ -73,8 +73,8 @@ app.use((req, res, next) => {
 
   // Serve the app on port 5000 for Replit webview
   // this serves both the API and the client
-  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
-  server.listen(port, "0.0.0.0", () => {
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : Math.floor(Math.random() * 1000) + 4000;
+  server.listen(port, () => {
     log(`serving on port ${port}`);
   });
 })();

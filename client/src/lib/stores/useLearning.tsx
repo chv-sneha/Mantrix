@@ -1334,6 +1334,23 @@ const initialCourses: Course[] = [
             type: 'multiple-choice'
           }
         ],
+        codingProblems: [
+          {
+            id: 'cloud-1-p1',
+            title: 'Cloud Service Classifier',
+            description: 'Write a function that classifies cloud services into IaaS, PaaS, or SaaS categories.',
+            difficulty: 'easy',
+            starterCode: 'function classifyService(serviceName) {\n  // Return "IaaS", "PaaS", or "SaaS"\n  \n}',
+            solution: 'function classifyService(serviceName) {\n  const iaas = ["EC2", "Virtual Machines", "Compute Engine"];\n  const paas = ["Heroku", "App Engine", "Azure App Service"];\n  const saas = ["Gmail", "Office 365", "Salesforce"];\n  \n  if (iaas.includes(serviceName)) return "IaaS";\n  if (paas.includes(serviceName)) return "PaaS";\n  if (saas.includes(serviceName)) return "SaaS";\n  return "Unknown";\n}',
+            functionName: 'classifyService',
+            testCases: [
+              { id: 't1', input: '"EC2"', expectedOutput: '"IaaS"', isHidden: false },
+              { id: 't2', input: '"Heroku"', expectedOutput: '"PaaS"', isHidden: false }
+            ],
+            hints: ['Create arrays for each service type', 'Check which array contains the service'],
+            tags: ['cloud', 'classification']
+          }
+        ],
         externalResources: [
           {
             title: 'AWS Cloud Practitioner Learning Path',
@@ -1910,25 +1927,43 @@ const initialCourses: Course[] = [
             type: 'multiple-choice'
           }
         ],
+        codingProblems: [
+          {
+            id: 'cloud-7-p1',
+            title: 'Create GitHub Actions Workflow',
+            description: 'Write a YAML configuration for a basic CI/CD pipeline that builds and tests a Node.js app.',
+            difficulty: 'medium',
+            starterCode: 'name: CI/CD Pipeline\non: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      # Add your steps here',
+            solution: 'name: CI/CD Pipeline\non: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-node@v3\n        with:\n          node-version: 18\n      - run: npm install\n      - run: npm test\n      - run: npm run build',
+            functionName: 'workflow',
+            testCases: [
+              { id: 't1', input: 'workflow', expectedOutput: 'valid YAML with checkout, setup-node, install, test, build steps', isHidden: false }
+            ],
+            hints: ['Use actions/checkout@v3 to get code', 'Use actions/setup-node@v3 for Node.js', 'Run npm install, test, and build'],
+            tags: ['ci-cd', 'github-actions', 'devops']
+          }
+        ],
         externalResources: [
           {
-            title: 'GitHub Actions Documentation',
-            url: 'https://docs.github.com/en/actions',
-            type: 'documentation',
-            description: 'Build workflows with GitHub Actions'
+            title: 'Build a CI/CD Pipeline - GitHub Actions',
+            url: 'https://github.com/skills/continuous-integration',
+            type: 'leetcode',
+            difficulty: 'medium',
+            description: 'Hands-on GitHub Actions tutorial'
           },
           {
-            title: 'Jenkins User Documentation',
-            url: 'https://www.jenkins.io/doc/',
-            type: 'documentation',
-            description: 'Set up Jenkins pipelines'
+            title: 'Deploy to Production - GitLab CI',
+            url: 'https://docs.gitlab.com/ee/ci/examples/deployment/',
+            type: 'leetcode', 
+            difficulty: 'medium',
+            description: 'Production deployment pipeline'
           },
           {
-            title: 'GitLab CI/CD Examples',
-            url: 'https://docs.gitlab.com/ee/ci/examples/',
+            title: 'Jenkins Pipeline Tutorial',
+            url: 'https://www.jenkins.io/doc/tutorials/build-a-node-js-and-react-app-with-npm/',
             type: 'neetcode',
             difficulty: 'medium',
-            description: 'Real-world pipeline examples'
+            description: 'Build Node.js app with Jenkins'
           }
         ],
         gameConfig: {
@@ -2311,7 +2346,8 @@ export const useLearning = create<LearningState>()(
           newIndex > currentIndex ||
           (newIndex === stageOrder.indexOf('complete') && !hasResources && currentStage === 'practice-game') ||
           (newIndex === 0 && currentStage !== 'teaching-game') ||
-          (currentStage === 'ai-videos' && newStage === 'teaching-game');
+          (currentStage === 'ai-videos' && newStage === 'teaching-game') ||
+          (currentStage === 'practice-game' && newStage === 'assessment');
 
         if (!isValidTransition) {
           console.error(`Invalid stage transition from ${currentStage} to ${newStage}`);
@@ -2433,8 +2469,7 @@ export const useLearning = create<LearningState>()(
             }
           }));
           
-          await get().completeLevel(levelId, result.xpEarned);
-
+          // Advance to assessment stage after successful game completion
           get().advanceStage(levelId, 'assessment');
           
           set((state) => ({

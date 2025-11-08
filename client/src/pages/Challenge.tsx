@@ -13,7 +13,7 @@ interface ChallengeProps {
 }
 
 export default function Challenge({ onNavigate }: ChallengeProps) {
-  const { courses, userProgress, advanceStage, goBackStage, startGame, updateAIMessages, aiCompanion, toggleAICompanion } = useLearning();
+  const { courses, userProgress, advanceStage, goBackStage, startGame, updateAIMessages, aiCompanion, toggleAICompanion, completeLevel } = useLearning();
   const { playSuccess } = useAudio();
   const [userAnswer, setUserAnswer] = useState('');
   const [showResult, setShowResult] = useState(false);
@@ -47,7 +47,7 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     // Show game completion screen first
     setTimeout(() => {
       advanceStage(currentLevel.id, 'assessment');
-    }, 3000); // 3 second delay to show completion
+    }, 2000); // 2 second delay to show completion
   };
 
   const handleGoBack = () => {
@@ -77,14 +77,29 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
   };
 
   const handleVideosComplete = () => {
+    console.log('Videos completed for level:', currentLevel.id);
+    console.log('Has game:', hasGame);
+    console.log('Game config:', currentLevel.gameConfig);
+    
     if (hasGame) {
-      advanceStage(currentLevel.id, 'teaching-game');
+      // For DevOps levels, go directly to practice-game stage
+      if (currentLevel.id.startsWith('cloud-')) {
+        console.log('Advancing DevOps level to practice-game stage');
+        advanceStage(currentLevel.id, 'practice-game');
+      } else {
+        console.log('Advancing to teaching-game stage');
+        advanceStage(currentLevel.id, 'teaching-game');
+      }
     } else {
+      console.log('No game, advancing to assessment');
       advanceStage(currentLevel.id, 'assessment');
     }
   };
 
-  const handleAssessmentComplete = () => {
+  const handleAssessmentComplete = async () => {
+    // Complete the level and award XP when assessment is finished
+    await completeLevel(currentLevel.id, currentLevel.xpReward);
+    
     if (currentLevel.externalResources && currentLevel.externalResources.length > 0) {
       advanceStage(currentLevel.id, 'resources');
     } else {
@@ -98,7 +113,8 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     if (success) {
       onNavigate('game-arena');
     } else {
-      console.error('Failed to start game');
+      console.error('Failed to start game for level:', currentLevel.id);
+      console.error('Game config:', currentLevel.gameConfig);
     }
   };
 
@@ -210,6 +226,7 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
       'ai-2': 'This type of AI is inspired by the human brain with interconnected nodes.',
       'cloud-1': 'One key benefit is the ability to handle more users by adding resources.',
       'cloud-2': 'Docker packages applications in isolated environments called...',
+      'cloud-7': 'CI/CD automates testing and deployment. Build your pipeline step by step: checkout code, install dependencies, run tests, then deploy. Each stage must pass before the next one runs.',
     };
     return hints[levelId] || 'Keep thinking! You can do this!';
   };
@@ -243,10 +260,17 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
         'Neural network is the type of AI inspired by the human brain'
       ],
       'cloud-1': [
-        'Scalability is the ability to handle more users by adding resources'
+        '1. Which cloud service model provides the most control over infrastructure? - IaaS',
+        '2. What does "on-demand" mean in cloud computing? - Resources can be provisioned instantly when needed',
+        '3. Which deployment model combines on-premises and public cloud? - Hybrid Cloud'
       ],
       'cloud-2': [
         'Container is what Docker packages applications in'
+      ],
+      'cloud-7': [
+        '1. What is the main goal of Continuous Deployment? - To automatically deploy every code change that passes tests',
+        '2. In a CI/CD pipeline, what should happen first? - Source/Pull Code', 
+        '3. What is a "build artifact"? - The output of the build process (compiled code, packages)'
       ]
     };
     return quizAnswers[levelId] || [];
@@ -337,11 +361,16 @@ console.log(count);`
 }`
       ],
       'cloud-1': [
-        `const cloudBenefits = {
-  scalability: "Handle more users by adding resources",
-  flexibility: "Scale up or down as needed",
-  costEffective: "Pay only for what you use"
-};`
+        `function classifyService(serviceName) {
+  const iaas = ["EC2", "Virtual Machines", "Compute Engine"];
+  const paas = ["Heroku", "App Engine", "Azure App Service"];
+  const saas = ["Gmail", "Office 365", "Salesforce"];
+  
+  if (iaas.includes(serviceName)) return "IaaS";
+  if (paas.includes(serviceName)) return "PaaS";
+  if (saas.includes(serviceName)) return "SaaS";
+  return "Unknown";
+}`
       ],
       'cloud-2': [
         `// Dockerfile
@@ -352,6 +381,21 @@ RUN npm install
 COPY . .
 EXPOSE 3000
 CMD ["npm", "start"]`
+      ],
+      'cloud-7': [
+        `name: CI/CD Pipeline
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      - run: npm run build`
       ]
     };
     return codingAnswers[levelId] || [];
@@ -558,7 +602,17 @@ CMD ["npm", "start"]`
     );
   }
 
-  if (currentStage === 'practice-game' && hasGame) {
+  if (currentStage === 'practice-game') {
+    if (!hasGame) {
+      console.log('No game config found, advancing to assessment');
+      setTimeout(() => advanceStage(currentLevel.id, 'assessment'), 100);
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-24 pb-12 px-4 flex items-center justify-center">
+          <div className="text-white text-xl">Loading...</div>
+        </div>
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
@@ -580,10 +634,16 @@ CMD ["npm", "start"]`
           </div>
           <div className="relative">
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border-2 border-purple-500 p-12 text-center max-w-2xl mx-auto">
-              <h1 className="font-game text-4xl text-purple-300 mb-6">Ready to Play?</h1>
+              <h1 className="font-game text-4xl text-purple-300 mb-6">Ready to Deploy?</h1>
               <p className="font-orbitron text-gray-300 mb-8">
-                You've completed the assessment! Now put your skills to the test in the practice game.
+                {currentLevel.id.startsWith('cloud-') 
+                  ? 'Time to deploy! Put your DevOps skills to the test in the deployment game.' 
+                  : 'You\'ve completed the videos! Now put your skills to the test in the practice game.'}
               </p>
+              <div className="mb-6">
+                <p className="text-sm text-gray-400 mb-2">Game: {currentLevel.gameConfig?.title}</p>
+                <p className="text-sm text-gray-400">{currentLevel.gameConfig?.description}</p>
+              </div>
               <button
                 onClick={handleStartGame}
                 className="px-8 py-4 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 font-game text-xl text-white transition-all glow"
