@@ -43,6 +43,12 @@ export function GameArena({ onNavigate }: GameArenaProps) {
     setGameResult(finalResult);
     if (currentGame) {
       await completeGame(currentGame.levelId, finalResult);
+      // Auto-navigate to challenge page after successful completion
+      if (finalResult.success) {
+        setTimeout(() => {
+          onNavigate('challenge');
+        }, 3000); // 3 second delay to show results
+      }
     }
   };
 
@@ -135,10 +141,12 @@ export function GameArena({ onNavigate }: GameArenaProps) {
           <div className="flex gap-4">
             {gameResult.success ? (
               <Button
-                onClick={handleReturnToCourses}
+                onClick={() => {
+                  onNavigate('challenge');
+                }}
                 className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3"
               >
-                Continue Learning
+                Continue to Assessment
               </Button>
             ) : (
               <>

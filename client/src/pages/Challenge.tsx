@@ -29,8 +29,15 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
   useEffect(() => {
     if (!currentLevel) {
       onNavigate('courses');
+      return;
     }
-  }, [currentLevel, onNavigate]);
+    
+    // Check if we just completed a game and should advance to assessment
+    const currentStage = currentLevel.currentStage || 'narrative';
+    const hasGame = !!currentLevel.gameConfig;
+    
+    // No automatic stage handling needed - store handles it
+  }, [currentLevel, onNavigate, userProgress.currentGame, advanceStage]);
 
   if (!currentLevel || !currentCourse) {
     return null;
@@ -44,10 +51,11 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
   };
 
   const handleTeachingGameComplete = (gameResult?: any) => {
+    console.log('Teaching game completed, advancing to assessment');
     // Show game completion screen first
     setTimeout(() => {
       advanceStage(currentLevel.id, 'assessment');
-    }, 3000); // 3 second delay to show completion
+    }, 2000); // 2 second delay to show completion
   };
 
   const handleGoBack = () => {
@@ -64,7 +72,7 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     if (correct) {
       playSuccess();
       
-      if (currentStage === 'assessment' && !hasGame) {
+      if (currentStage === 'assessment') {
         setTimeout(() => {
           if (currentLevel.externalResources && currentLevel.externalResources.length > 0) {
             advanceStage(currentLevel.id, 'resources');
@@ -77,8 +85,8 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
   };
 
   const handleVideosComplete = () => {
-    if (hasGame) {
-      advanceStage(currentLevel.id, 'teaching-game');
+    if (hasGame && currentLevel.gameConfig) {
+      advanceStage(currentLevel.id, 'practice-game');
     } else {
       advanceStage(currentLevel.id, 'assessment');
     }
@@ -417,7 +425,18 @@ CMD ["npm", "start"]`
   }
 
   if (currentStage === 'teaching-game') {
-    // Check if this is the HTML level that should use MarkupForge
+    console.log('Rendering teaching game for level:', currentLevel.id, 'gameConfig:', currentLevel.gameConfig);
+    
+    // If level has a specific game config, use the game arena
+    if (currentLevel.gameConfig) {
+      const success = startGame(currentLevel.id);
+      if (success) {
+        onNavigate('game-arena');
+        return null;
+      }
+    }
+    
+    // Fallback to generic teaching game or specific games
     if (currentLevel.id === 'web-1' || currentLevel.title.toLowerCase().includes('html') || currentLevel.title.toLowerCase().includes('markup')) {
       return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 pt-24 pb-12 px-4">
@@ -582,7 +601,7 @@ CMD ["npm", "start"]`
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border-2 border-purple-500 p-12 text-center max-w-2xl mx-auto">
               <h1 className="font-game text-4xl text-purple-300 mb-6">Ready to Play?</h1>
               <p className="font-orbitron text-gray-300 mb-8">
-                You've completed the assessment! Now put your skills to the test in the practice game.
+                Time to put your knowledge to the test! Complete the game to unlock the assessment.
               </p>
               <button
                 onClick={handleStartGame}

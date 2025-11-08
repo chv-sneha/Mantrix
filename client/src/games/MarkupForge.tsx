@@ -169,14 +169,33 @@ export function MarkupForge({ config, onComplete }: GameProps) {
     // Show completion screen before calling onComplete
     setShowCompletion(true);
 
-    setTimeout(() => {
+    const completeGame = () => {
       onComplete({
         score,
         timeSpent: (config.timeLimit || 90) - timeLeft,
         success,
         xpEarned: success ? 150 : 75,
       });
-    }, 3000); // 3 second delay
+    };
+
+    // Auto-advance after 3 seconds, or user can click to continue immediately
+    const timeoutId = setTimeout(completeGame, 3000);
+
+    // Store timeout ID to clear if user clicks button
+    (window as any).gameTimeoutId = timeoutId;
+  };
+
+  const handleContinueAssessment = () => {
+    if ((window as any).gameTimeoutId) {
+      clearTimeout((window as any).gameTimeoutId);
+    }
+    const success = score >= config.passingScore;
+    onComplete({
+      score,
+      timeSpent: (config.timeLimit || 90) - timeLeft,
+      success,
+      xpEarned: success ? 150 : 75,
+    });
   };
 
   const handleBlockClick = (id: number) => {
@@ -273,7 +292,15 @@ export function MarkupForge({ config, onComplete }: GameProps) {
                 <p><strong>Why It Matters:</strong> Proper HTML structure improves SEO, accessibility, prevents layout issues, and makes websites work better for everyone.</p>
               </div>
             </div>
-            <p className="text-gray-400">Moving to assessment in a moment...</p>
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-gray-400">Moving to assessment in a moment...</p>
+              <button
+                onClick={handleContinueAssessment}
+                className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
+              >
+                Continue to Assessment
+              </button>
+            </div>
           </div>
         </div>
       )}

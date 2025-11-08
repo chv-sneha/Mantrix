@@ -2234,7 +2234,7 @@ export const useLearning = create<LearningState>()(
       },
       
       advanceStage: (levelId, newStage) => {
-        const stageOrder: LevelStage[] = ['narrative', 'teaching-game', 'ai-videos', 'assessment', 'practice-game', 'resources', 'complete'];
+        const stageOrder: LevelStage[] = ['narrative', 'teaching-game', 'ai-videos', 'practice-game', 'assessment', 'resources', 'complete'];
 
         const state = get();
         const level = state.courses
@@ -2285,7 +2285,7 @@ export const useLearning = create<LearningState>()(
       },
 
       goBackStage: (levelId) => {
-        const stageOrder: LevelStage[] = ['narrative', 'teaching-game', 'ai-videos', 'assessment', 'practice-game', 'resources', 'complete'];
+        const stageOrder: LevelStage[] = ['narrative', 'teaching-game', 'ai-videos', 'practice-game', 'assessment', 'resources', 'complete'];
 
         const state = get();
         const level = state.courses
@@ -2386,9 +2386,11 @@ export const useLearning = create<LearningState>()(
           }));
           
           await get().completeLevel(levelId, result.xpEarned);
-
+          
+          // Advance to assessment stage
           get().advanceStage(levelId, 'assessment');
           
+          // Clear the game after advancing
           set((state) => ({
             userProgress: {
               ...state.userProgress,
@@ -2404,6 +2406,7 @@ export const useLearning = create<LearningState>()(
                 attempts: newAttempts,
                 bestScore: newBestScore,
                 timeSpent: newTimeSpent,
+                completed: false,
               }
             }
           }));
@@ -2519,10 +2522,10 @@ export const useLearning = create<LearningState>()(
     }),
     {
       name: 'skillquest-learning',
-      version: 3,
+      version: 4,
       migrate: (persistedState: any, version: number) => {
-        if (version < 2) {
-          console.log('Migrating from version', version, 'to version 2 - Resetting all level stages');
+        if (version < 4) {
+          console.log('Migrating from version', version, 'to version 4 - Resetting all level stages for new flow');
           
           if (persistedState.courses) {
             persistedState.courses = persistedState.courses.map((course: any) => ({
@@ -2536,6 +2539,7 @@ export const useLearning = create<LearningState>()(
           
           if (persistedState.userProgress) {
             persistedState.userProgress.currentLevel = null;
+            persistedState.userProgress.currentGame = null;
           }
         }
         return persistedState;
