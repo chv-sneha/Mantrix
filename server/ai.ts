@@ -1,7 +1,9 @@
 import OpenAI from "openai";
 
 // Note that the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 export interface AIHintRequest {
   levelId: string;
@@ -17,6 +19,10 @@ export interface AIChallengeRequest {
 }
 
 export async function generateHint(request: AIHintRequest): Promise<string> {
+  if (!openai) {
+    return "AI features require an OpenAI API key. You can still solve challenges using the built-in hints!";
+  }
+
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5",
@@ -45,6 +51,14 @@ export async function generateChallenge(request: AIChallengeRequest): Promise<{
   hints: string[];
   solution: string;
 }> {
+  if (!openai) {
+    return {
+      question: "AI challenge generation requires an OpenAI API key. Use the built-in challenges!",
+      hints: ["Check the course roadmap", "Try the default challenges"],
+      solution: "answer"
+    };
+  }
+
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5",
@@ -79,6 +93,10 @@ export async function generateChallenge(request: AIChallengeRequest): Promise<{
 }
 
 export async function provideExplanation(topic: string, userAnswer: string, correctAnswer: string): Promise<string> {
+  if (!openai) {
+    return "AI explanations require an OpenAI API key. The correct answer demonstrates the key concept. Keep practicing!";
+  }
+
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5",
@@ -103,6 +121,10 @@ export async function provideExplanation(topic: string, userAnswer: string, corr
 }
 
 export async function getMotivationalMessage(completedLevels: number, totalXP: number): Promise<string> {
+  if (!openai) {
+    return "You're doing great! Keep learning and leveling up! 🌟";
+  }
+
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-5",
