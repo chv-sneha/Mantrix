@@ -10,6 +10,15 @@ export interface AIHintRequest {
   courseId: string;
   userProgress: string;
   difficulty: string;
+  currentStage?: string;
+  problemContext?: {
+    type: 'quiz' | 'coding';
+    title?: string;
+    description?: string;
+    userCode?: string;
+    testResults?: string;
+    attempts?: number;
+  };
 }
 
 export interface AIChallengeRequest {
@@ -24,16 +33,46 @@ export async function generateHint(request: AIHintRequest): Promise<string> {
   }
 
   try {
+    let contextMessage = `I'm working on ${request.levelId} in the ${request.courseId} course. The difficulty is ${request.difficulty}.`;
+    
+    if (request.currentStage) {
+      contextMessage += ` Current stage: ${request.currentStage}.`;
+    }
+    
+    if (request.problemContext) {
+      const { type, title, description, userCode, testResults, attempts } = request.problemContext;
+      
+      if (type === 'coding') {
+        contextMessage += `\n\nProblem: ${title}\nDescription: ${description}`;
+        if (userCode) {
+          contextMessage += `\n\nMy code so far:\n${userCode}`;
+        }
+        if (testResults) {
+          contextMessage += `\n\nTest results: ${testResults}`;
+        }
+        if (attempts) {
+          contextMessage += `\nAttempts: ${attempts}`;
+        }
+      } else if (type === 'quiz') {
+        contextMessage += `\n\nQuiz question: ${title || description}`;
+        if (attempts && attempts > 1) {
+          contextMessage += `\nI've tried ${attempts} times already.`;
+        }
+      }
+    }
+    
+    contextMessage += `\n\nCan you give me a hint without revealing the answer?`;
+
     const response = await openai.chat.completions.create({
       model: "gpt-5",
       messages: [
         {
           role: "system",
-          content: "You are a friendly AI learning companion helping students master programming and tech skills. Provide encouraging, clear hints without giving away the complete answer. Keep responses concise (2-3 sentences)."
+          content: "You are a friendly AI learning companion helping students master programming and tech skills. Provide encouraging, contextual hints based on their current stage and problem. For coding problems, guide them toward the solution without writing the code. For quiz questions, help them think through the concept. Keep responses concise (2-3 sentences) and encouraging."
         },
         {
           role: "user",
-          content: `I'm working on ${request.levelId} in the ${request.courseId} course. The difficulty is ${request.difficulty}. Can you give me a hint? My progress so far: ${request.userProgress}`
+          content: contextMessage
         }
       ],
       max_completion_tokens: 150,

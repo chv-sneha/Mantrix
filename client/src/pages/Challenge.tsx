@@ -98,6 +98,31 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
     onNavigate('courses');
   };
 
+  const handleAIHelp = async (context?: { type: 'quiz' | 'coding'; title?: string; description?: string; userCode?: string; testResults?: string; attempts?: number; }) => {
+    try {
+      const response = await fetch('/api/ai/hint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          levelId: currentLevel.id,
+          courseId: currentCourse.id,
+          userProgress: `XP: ${userProgress.totalXP}, Level: ${userProgress.level}`,
+          difficulty: currentLevel.difficulty,
+          currentStage: currentStage,
+          problemContext: context
+        })
+      });
+      
+      const data = await response.json();
+      updateAIMessages({ role: 'assistant', content: data.hint || 'Keep going! You can do this!' });
+      toggleAICompanion();
+    } catch (error) {
+      console.error('Error getting AI hint:', error);
+      updateAIMessages({ role: 'assistant', content: 'I\'m here to help! Try breaking the problem into smaller steps.' });
+      toggleAICompanion();
+    }
+  };
+
   const handleAIChat = () => {
     if (!chatInput.trim()) return;
     
@@ -222,7 +247,7 @@ export default function Challenge({ onNavigate }: ChallengeProps) {
       <AssessmentHub
         level={currentLevel}
         onComplete={handleAssessmentComplete}
-        onAIHelp={toggleAICompanion}
+        onAIHelp={handleAIHelp}
       />
     );
   }

@@ -5,7 +5,7 @@ import { CheckCircle, XCircle, Code, Play, Lightbulb } from 'lucide-react';
 interface AssessmentHubProps {
   level: Level;
   onComplete: () => void;
-  onAIHelp: () => void;
+  onAIHelp?: (context?: { type: 'quiz' | 'coding'; title?: string; description?: string; userCode?: string; testResults?: string; attempts?: number; }) => void;
 }
 
 export function AssessmentHub({ level, onComplete, onAIHelp }: AssessmentHubProps) {
@@ -18,6 +18,7 @@ export function AssessmentHub({ level, onComplete, onAIHelp }: AssessmentHubProp
   const [codeOutput, setCodeOutput] = useState<string[]>([]);
   const [testResults, setTestResults] = useState<{passed: number, total: number} | null>(null);
   const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
+  const [quizAttempts, setQuizAttempts] = useState(0);
 
   const hasQuiz = level.quizQuestions && level.quizQuestions.length > 0;
   const hasCoding = level.codingProblems && level.codingProblems.length > 0;
@@ -41,11 +42,41 @@ export function AssessmentHub({ level, onComplete, onAIHelp }: AssessmentHubProp
     
     setQuizScore(correct);
     setQuizSubmitted(true);
+    setQuizAttempts(prev => prev + 1);
+  };
+
+  const handleRequestQuizHint = (question: QuizQuestion) => {
+    if (onAIHelp) {
+      onAIHelp({
+        type: 'quiz',
+        title: question.question,
+        description: question.options?.join(', ') || '',
+        attempts: quizAttempts
+      });
+    }
+  };
+
+  const [codingAttempts, setCodingAttempts] = useState(0);
+
+  const handleRequestCodingHint = () => {
+    if (onAIHelp && currentProblem) {
+      onAIHelp({
+        type: 'coding',
+        title: currentProblem.title,
+        description: currentProblem.description,
+        userCode: currentCode,
+        testResults: testResults 
+          ? `Passed ${testResults.passed}/${testResults.total} tests. Output: ${codeOutput.join('; ')}`
+          : undefined,
+        attempts: codingAttempts
+      });
+    }
   };
 
   const handleRunCode = () => {
     if (!currentProblem) return;
     
+    setCodingAttempts(prev => prev + 1);
     const output: string[] = [];
     let passed = 0;
     
@@ -162,6 +193,16 @@ export function AssessmentHub({ level, onComplete, onAIHelp }: AssessmentHubProp
                     </div>
                   )}
                   
+                  {!quizSubmitted && (
+                    <button
+                      onClick={() => handleRequestQuizHint(question)}
+                      className="mt-3 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 font-orbitron text-xs text-white transition-colors flex items-center gap-2"
+                    >
+                      <Lightbulb className="w-3 h-3" />
+                      Get AI Hint
+                    </button>
+                  )}
+
                   {quizSubmitted && (
                     <div className={`mt-4 p-4 rounded-lg ${
                       quizAnswers[question.id] === question.correctAnswer
@@ -243,7 +284,7 @@ export function AssessmentHub({ level, onComplete, onAIHelp }: AssessmentHubProp
                   Run Tests
                 </button>
                 <button
-                  onClick={onAIHelp}
+                  onClick={handleRequestCodingHint}
                   className="px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-500 font-orbitron text-sm text-white transition-colors flex items-center gap-2"
                 >
                   <Lightbulb className="w-4 h-4" />
